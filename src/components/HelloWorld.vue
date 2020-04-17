@@ -7,6 +7,7 @@
       muted
       loop
       autoplay
+      controlslist="nodownload"
     >
       您的浏览器不支持HTML5</video>
     <button class="share">
@@ -72,6 +73,6 @@ video {
 .button-wrap {
   display: flex;
   justify-content: center;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 200px);
 }
 </style>
