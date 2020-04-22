@@ -1,6 +1,10 @@
 <template>
   <div style="margin: 8px;">
     <!-- 横向移动标签 -->
+    <button
+      class="randomSelection"
+      @click="randomSelect()"
+    >随机选择</button>
     <p>请选择想分享的视频</p>
     <div class="slide-box">
       <img
@@ -18,6 +22,7 @@
       :src="x"
       @click="selectedAudio = i,switchMusic()"
       :class="{'selectedAudio':selectedAudio == i}"
+      style="    border: 1px solid white;"
     >{{i+1}}:音乐名称<i class="iconfont">{{selectedAudio===i?'&#xe633':'&#xe7f5'}}</i></p>
     <audio
       class='audio'
@@ -36,7 +41,7 @@ export default {
       show: false,
       selectedImg: -1,
       selectedAudio: -1,
-      imgsSrc: ['/static/img/test2.67bb8e1.png', '/static/img/test2.67bb8e1.png', './static/img/test2.67bb8e1.png', '/static/img/test2.67bb8e1.png'],
+      imgsSrc: ['/static/img/landscape.362f267.png', '/static/img/mountain.876ce18.png', '/static/img/mountain.876ce18.png', '/static/img/landscape.362f267.png'],
       audioSrc: ['../assets/test.mp3', '../assets/test2.mp3', '../assets/test.mp3']
     }
   },
@@ -51,6 +56,11 @@ export default {
     },
     switchMusic () {
 
+    },
+    randomSelect () {
+      let imgMax = this.imgsSrc.length;
+      this.selectedImg = Math.floor(Math.random() * (imgMax + 1));
+      this.selectedAudio = Math.floor(Math.random() * (3 + 1));
     }
   }
 }
@@ -101,5 +111,10 @@ img {
 }
 .selectedAudio {
   border: 1px solid white;
+}
+.randomSelection {
+  border: 2px solid black;
+  border-radius: 5px;
+  background-color: transparent;
 }
 </style>

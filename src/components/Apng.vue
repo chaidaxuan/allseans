@@ -1,18 +1,18 @@
 <template>
   <div>
     <div style="width: 100vw;height: 100vh;">
-      <!-- 声音按钮 -->
 
       <img
-        src="../assets/landscape.png"
+        src="../assets/mountain.png"
         style="width: 100vw;height: 100vh;object-fit:cover;"
       >
-
+      <!-- 动画播放按钮 -->
       <button
         @click="show = true"
         ref="btn"
         style="display:none"
       >动画</button>
+      <!-- 诗句显示 -->
       <transition name="slide-fade">
         <button
           v-if="show"
@@ -28,10 +28,25 @@
               v-for="(item,i) in  poems[0].poem"
               :key='i'
             >{{item}}<br></div>
+            <div class="poem-info">{{poems[0].info.auth}}<br></div>
+            <div class="poem-info">{{poems[0].info.chapter}}<br></div>
           </div>
 
         </button>
       </transition>
+      <!-- 立即分享按钮 -->
+      <!-- 定制专属诗签按钮 -->
+
+      <img
+        class="share-btn"
+        src='../assets/share.png'
+        @click="routeToShare()"
+      >
+      <img
+        class="customize-btn"
+        src='../assets/customize-btn.png'
+        @click="routeToCustomize()"
+      >
     </div>
   </div>
 </template>
@@ -43,15 +58,24 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       show: false,
-      poems: [{ poem: ['你是四月早天里的云烟，', '黄昏吹着风的软，', '星子在无意中闪，', '细雨点洒在花前。'], info: { auth: '林徽因', chapter: '《你是人间的四月天》节选' } }]
+      poems: [{ poem: ['你是四月早天里的云烟，', '黄昏吹着风的软，', '星子在无意中闪，', '细雨点洒在花前。'], info: { auth: '——林徽因', chapter: '《你是人间的四月天》节选' } },
+      { poem: ['最是那一低头的温柔', '象一朵水莲花不胜凉风的娇羞，', '道一声珍重，道一声珍重，', '那一声珍重里有蜜甜的忧愁', '沙扬娜拉'], info: { auth: '——徐志摩', chapter: '《沙扬娜拉》' } }
+      ]
     }
   },
   mounted () {
     let btn = this.$refs.btn
     this.$refs.btn.click()
     console.log('btn', btn)
+  },
+  methods: {
+    routeToCustomize () {
+      this.$router.push({ name: 'Select' });
+    },
+    routeToShare () {
+      this.$router.push({ name: 'Select' });
+    }
   }
-
 }
 </script>
 
@@ -107,21 +131,6 @@ video {
   transform: translateY(-10vh);
   opacity: 0;
 }
-
-/* .slide-fade-enter {
-  animation: bounce-in 3s reverse;
-}
-@keyframes bounce-in {
-  0% {
-    opacity: 0.3;
-  }
-  50% {
-    opacity: 0.6;
-  }
-  100% {
-    opacity: 1;
-  }
-} */
 .sound-group {
   width: 5vw;
   height: 5vh;
@@ -150,9 +159,42 @@ video {
 .poem {
   font-size: 1.1rem;
   text-align: left;
-  margin: 0 auto;
-  height: 50vh;
+  /* margin: 0 auto; */
+  height: 40vh;
   writing-mode: vertical-rl; /*从左向右 从右向左是 writing-mode: vertical-rl;*/
   writing-mode: tb-rl; /*IE浏览器的从左向右 从右向左是 writing-mode: tb-rl；*/
+}
+.poem-info {
+  font-size: 0.6rem;
+  float: right;
+  clear: both;
+}
+.customize-btn {
+  position: fixed;
+  margin: auto;
+  left: 0;
+  right: 0;
+  /* top: 0; */
+  bottom: 10vh;
+  width: 10rem;
+  height: 3rem;
+  background-color: transparent;
+  border: 0;
+  color: white;
+  object-fit: contain;
+}
+.share-btn {
+  position: fixed;
+  margin: auto;
+  left: 0;
+  right: 0;
+  /* top: 0; */
+  bottom: 20vh;
+  width: 10rem;
+  height: 3rem;
+  background-color: transparent;
+  border: 0;
+  color: white;
+  object-fit: contain;
 }
 </style>
