@@ -1,0 +1,33 @@
+@font-face {font-family: "iconfont";
+  src: url('iconfont.eot?t=1587454132872'); /* IE9 */
+  src: url('iconfont.eot?t=1587454132872#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAO8AAsAAAAACFgAAANwAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDMgqDZIMaATYCJAMUCwwABCAFhG0HWhs4BxEVnFvIfhw4bsP6rve2KyeqqJH0n4PnSbd6fyRkJ8CeqeRcpXOxyqyipgECCMLuu/Z+UsDCRJhD+S162Oxh2utR+tLcyM/pKTUhJ+T+uHfcEp+vbTmutWxin7oAowkU6JibqECGJcgNY1dexGII4MhFCaR+w+bt8TEYrQSQ4UMG9cFPaTA1yYKP4JUMNMhqLL5aoh4Cq/zXy2/KiQ8KqzGWaj2wQX/Cb3xP6NnJ2brr5awczwSwYaCBEoABGVtqGY4OIyXQOOVzhhBw+CjUN76V/573eyKZRBXsSObMPzzQKAwC4mEkRgEIUdTAN2wTmjPkQhYUfM/LgoHvCd69LGMBcEAKsAI4jxQ5xnyUQlBFolGbJk00Hu/w+nXHN2863WqR0W64UnhUsOdSVjP76NOXruzNy+4VzaiHq5cvu958mWfbqwZ33uTf/npU/GVjR8lwNyxYtg8ze69zS/eLnXMglv7ltLHnX+bxtr1qNu7CnGknn+Ywm55VPPMit938vC9LOz6rqQzoJ83Nbfr1b87R9Atru3SzOzYws+u6rQWP5K2TNX8z6V93GZr2H9Bcco3rvbBK9/Cfat6/X9OCaevWFalbL02aevUkf51w0OjAWFeUTZMmTd26SpbJ1rB7uKtD/Qg1dvSNp4v5sXRxP1+59IFUTfviypYfPUrUCot2LVfsyub/gyila48eGLkcGTjaK/5O74mSlSoYndQXtQuSrK/q5ZB0haHJ+7fvodWaHdV6pdZI+IEB4P3Nayd9d5IN7Tk/SIrC/ZPcljlG5Rtaa+RsmyNbLQ0SGpRS5ID/50jH53FsGSE2CT7nQlBEyAkanwIogysBloAK4OFTGxzFaTQ80EuPTclSgGK+AYg0fkCJuwJaGr8og/sDK5N/8KRpCk7HDhMGCmXmJ8ZMsIT8E0xBvbL0Mg+S76iHNuMk38e/Ijvjh8gPs/Eb9shjdHFvOhZRoJg6uILlsG0JLFONhfiViD0GgSq7k19QN5qrh6GMQCWQ+wSMAukpt7CY555/h7RBK8M1iAr7K8QcUzuI+MIWqJukb4W4lmOcN1pMCAUojHTAFZhQa0YIsOX1aqggfFWPkHUUoHyqrcSfX9Y94yrAMWa3KdFixIqH/VAa2naDM4V3C8bEZnEmzmybfa6/sstS99oOf1VmNAI=') format('woff2'),
+  url('iconfont.woff?t=1587454132872') format('woff'),
+  url('iconfont.ttf?t=1587454132872') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+  url('iconfont.svg?t=1587454132872#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-audio:before {
+  content: "\e7f5";
+}
+
+.icon-music-icon_pause:before {
+  content: "\e633";
+}
+
+.icon-play:before {
+  content: "\e600";
+}
+
+.icon-zantingtingzhi:before {
+  content: "\e721";
+}
+

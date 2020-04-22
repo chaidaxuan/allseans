@@ -1,7 +1,5 @@
 <template>
-  <div id="app">
-    <router-view />
-  </div>
+  <router-view />
 </template>
 
 <script>
@@ -18,5 +16,34 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+body {
+  margin: 0px;
+}
+html {
+  background-color: #fffdf4;
+}
+@font-face {
+  font-family: "iconfont"; /* project id 1769893 */
+  src: url("//at.alicdn.com/t/font_1769893_pgwwuio0oo.eot");
+  src: url("//at.alicdn.com/t/font_1769893_pgwwuio0oo.eot?#iefix")
+      format("embedded-opentype"),
+    url("//at.alicdn.com/t/font_1769893_pgwwuio0oo.woff2") format("woff2"),
+    url("//at.alicdn.com/t/font_1769893_pgwwuio0oo.woff") format("woff"),
+    url("//at.alicdn.com/t/font_1769893_pgwwuio0oo.ttf") format("truetype"),
+    url("//at.alicdn.com/t/font_1769893_pgwwuio0oo.svg#iconfont") format("svg");
+}
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 18px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-play {
+  content: "\e7f5;";
+}
+.icon-pause {
+  content: "\e633;";
 }
 </style>

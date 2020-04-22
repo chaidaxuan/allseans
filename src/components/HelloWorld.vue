@@ -1,23 +1,18 @@
 <template>
-  <div class="button-wrap">
-    <video
-      ref="video"
-      src="../assets/video/test.mp4"
-      controls
-      muted
-      loop
-      autoplay
-      controlslist="nodownload"
-    >
-      您的浏览器不支持HTML5</video>
-    <button class="share">
-      分享此刻心情
-    </button>
-    <!-- <audio controls>
-      <source src="horse.ogg">
-      <source src="horse.mp3">
-      您的浏览器不支持 audio 元素。
-    </audio> -->
+  <div>
+    <div>
+      <router-link to="./apng">apng页面
+      </router-link>
+
+    </div>
+    <div>
+      <router-link to="./video">video页面
+      </router-link>
+    </div>
+    <div>
+      <router-link to="./select">选择模板页面
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -26,9 +21,14 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      show: false
     }
+  },
+  mounted () {
+
   }
+
 }
 </script>
 
@@ -66,13 +66,21 @@ video {
   margin: 0;
   padding: 0;
   border: 0;
-  color: aliceblue;
   font-size: 1.2rem;
   top: 50%;
 }
+
 .button-wrap {
   display: flex;
   justify-content: center;
   height: calc(100vh - 200px);
+}
+
+.slide-fade-enter-active {
+  transition: all 3s ease;
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateY(-100vh);
 }
 </style>
