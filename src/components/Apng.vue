@@ -1,9 +1,13 @@
 <template>
   <div>
     <div style="width: 100vw;height: 100vh;">
-
+      <audio
+        class='audio'
+        src="/cx-test/static/test3.mp3"
+        autoplay
+      ></audio>
       <img
-        src="../assets/mountain.png"
+        :src="imgSrc"
         style="width: 100vw;height: 100vh;object-fit:cover;"
       >
       <!-- 动画播放按钮 -->
@@ -18,11 +22,6 @@
           v-if="show"
           class="text-btn"
         >
-          <!-- <div class="poem">
-            {{poems[0].poem[0]}}<br>
-            <text>你是四月早天里的云烟，<br></text>黄昏吹着风的软，<br>星子在无意中闪，<br>细雨点洒在花前。<br>——林徽因<br>《你是人间的四月天》节选
-          </div> -->
-
           <div class="poem">
             <div
               v-for="(item,i) in  poems[0].poem"
@@ -58,6 +57,10 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       show: false,
+      imgIndex: 0,
+      imgSrc: '/cx-test/static/landscape.png',
+      imgsSrc: ['/cx-test/static/landscape.png', '/cx-test/static/road.png', '/cx-test/static/mountain.png', '/cx-test/static/apng.png',],
+      audioSrc: '../assets/audio/贵族乐团 - 旅行鸟鸣水声',
       poems: [{ poem: ['你是四月早天里的云烟，', '黄昏吹着风的软，', '星子在无意中闪，', '细雨点洒在花前。'], info: { auth: '——林徽因', chapter: '《你是人间的四月天》节选' } },
       { poem: ['最是那一低头的温柔', '象一朵水莲花不胜凉风的娇羞，', '道一声珍重，道一声珍重，', '那一声珍重里有蜜甜的忧愁', '沙扬娜拉'], info: { auth: '——徐志摩', chapter: '《沙扬娜拉》' } }
       ]
@@ -73,7 +76,8 @@ export default {
       this.$router.push({ name: 'Select' });
     },
     routeToShare () {
-      this.$router.push({ name: 'Select' });
+      imgIndex = 3 ? imgIndex = 0 : imgIndex++;
+      this.imgSrc = imgsSrc[imgIndex];
     }
   }
 }

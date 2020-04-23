@@ -1,5 +1,5 @@
 <template>
-  <div style="margin: 8px;">
+  <div style="margin:8px;width:calc(100vw - 16px)">
     <!-- 横向移动标签 -->
     <button
       class="randomSelection"
@@ -12,6 +12,7 @@
         :key='i'
         :src="x"
         @click="selectedImg = i"
+        style=""
         :class="{'selected':selectedImg == i}"
       >
     </div>
@@ -28,7 +29,6 @@
       class='audio'
       :src='audioSrc[selectedAudio]'
     ></audio>
-
   </div>
 </template>
 
@@ -41,8 +41,8 @@ export default {
       show: false,
       selectedImg: -1,
       selectedAudio: -1,
-      imgsSrc: ['/static/img/landscape.362f267.png', '/static/img/mountain.876ce18.png', '/static/img/mountain.876ce18.png', '/static/img/landscape.362f267.png'],
-      audioSrc: ['../assets/test.mp3', '../assets/test2.mp3', '../assets/test.mp3']
+      imgsSrc: ['/cx-test/static/landscape.png', '/cx-test/static/road.png', '/cx-test/static/mountain.png', '/cx-test/static/apng.png',],
+      audioSrc: ['/cx-test/static/test3.mp3', '/cx-test/static/test3.mp3', '/cx-test/static/test3.mp3']
     }
   },
   mounted () {
@@ -104,6 +104,7 @@ img {
   border: 3px solid white;
   object-fit: cover;
   margin: auto 5px solid white;
+  box-sizing: border-box;
 }
 .selected {
   border-color: black;
@@ -113,7 +114,7 @@ img {
   border: 1px solid white;
 }
 .randomSelection {
-  border: 2px solid black;
+  border: 3px solid black;
   border-radius: 5px;
   background-color: transparent;
 }
