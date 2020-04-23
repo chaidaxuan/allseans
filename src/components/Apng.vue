@@ -1,15 +1,25 @@
 <template>
   <div>
-    <div style="width: 100vw;height: 100vh;">
+    <div class="apng-wrap">
       <audio
         class='audio'
-        src="/cx-test/static/test3.mp3"
+        src="/cx-test/static/output2.mp3"
         autoplay
       ></audio>
-      <img
-        :src="imgSrc"
+      <!-- <img
+        class="apng-image"
+        src="../assets/mountain.png"
         style="width: 100vw;height: 100vh;object-fit:cover;"
+      > -->
+      <canvas
+        id="apng-canvas"
+        width="352"
+        height="640"
+        style="width: 100%;height: 100%;object-fit:cover;"
       >
+
+      </canvas>
+
       <!-- 动画播放按钮 -->
       <button
         @click="show = true"
@@ -18,9 +28,9 @@
       >动画</button>
       <!-- 诗句显示 -->
       <transition name="slide-fade">
-        <button
+        <div
           v-if="show"
-          class="text-btn"
+          class="poem-wrap"
         >
           <div class="poem">
             <div
@@ -30,8 +40,7 @@
             <div class="poem-info">{{poems[0].info.auth}}<br></div>
             <div class="poem-info">{{poems[0].info.chapter}}<br></div>
           </div>
-
-        </button>
+        </div>
       </transition>
       <!-- 立即分享按钮 -->
       <!-- 定制专属诗签按钮 -->
@@ -39,7 +48,6 @@
       <img
         class="share-btn"
         src='../assets/share.png'
-        @click="routeToShare()"
       >
       <img
         class="customize-btn"
@@ -51,8 +59,15 @@
 </template>
 
 <script>
+import Select from '@/components/Select'
+import Share from '@/components/Share'
+
 export default {
   name: 'Apng',
+  components: {
+    Select,
+    Share
+  },
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
@@ -66,19 +81,36 @@ export default {
       ]
     }
   },
+
   mounted () {
     let btn = this.$refs.btn
     this.$refs.btn.click()
     console.log('btn', btn)
+
+    this.print();
   },
   methods: {
     routeToCustomize () {
       this.$router.push({ name: 'Select' });
     },
     routeToShare () {
-      imgIndex = 3 ? imgIndex = 0 : imgIndex++;
-      this.imgSrc = imgsSrc[imgIndex];
-    }
+      this.imgIndex === 3 ? this.imgIndex = 0 : this.imgIndex++;
+      this.imgSrc = this.imgsSrc[this.imgIndex];
+    },
+    print () {
+      // $("#one").find("img").each(function () { APNG.animateImage(this); console.log('1') });
+
+      var images = document.querySelectorAll(".apng-image");
+      console.log('images', images);
+      for (var i = 0; i < images.length; i++) APNG.animateImage(images[i]);
+
+      let canvansTest = document.getElementById('apng-canvas');
+      APNG.animateContext('/cx-test/static/mountain.png', canvansTest.getContext("2d")).then(a => {
+        console.log("fullfilled:", a);
+      }).catch(e => {
+        console.error("error:", e);
+      });
+    },
   }
 }
 </script>
@@ -132,7 +164,7 @@ video {
 }
 .slide-fade-enter,
 .slide-fade-leave-to {
-  transform: translateY(-10vh);
+  transform: translateY(-10%);
   opacity: 0;
 }
 .sound-group {
@@ -148,12 +180,13 @@ video {
   width: 100%;
   height: auto;
 }
-.text-btn {
+.poem-wrap {
+  width: 40%;
+  height: 20%;
   display: block;
-  position: fixed;
+  position: absolute;
   color: white;
   font-size: 30px;
-  border: 0px;
   padding: 0px;
   background-color: transparent;
   top: 50px;
@@ -169,12 +202,12 @@ video {
   writing-mode: tb-rl; /*IE浏览器的从左向右 从右向左是 writing-mode: tb-rl；*/
 }
 .poem-info {
-  font-size: 0.6rem;
+  font-size: 0.8em;
   float: right;
   clear: both;
 }
 .customize-btn {
-  position: fixed;
+  position: absolute;
   margin: auto;
   left: 0;
   right: 0;
@@ -188,7 +221,7 @@ video {
   object-fit: contain;
 }
 .share-btn {
-  position: fixed;
+  position: absolute;
   margin: auto;
   left: 0;
   right: 0;
@@ -200,5 +233,10 @@ video {
   border: 0;
   color: white;
   object-fit: contain;
+}
+.apng-wrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 </style>

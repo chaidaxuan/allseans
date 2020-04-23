@@ -29,7 +29,24 @@
       class='audio'
       :src='audioSrc[selectedAudio]'
     ></audio>
+    <p
+      id="message"
+      style="display: block;"
+    >apng-canvas needed</p>
+    <div>
+      <img
+        class="apng-image"
+        src="../assets/landscape.png"
+        style="width:200px;height:200px;"
+      >
+      <img
+        class="apng-image"
+        src="../assets/road.png"
+        style="width:200px;height:200px;"
+      >
+    </div>
   </div>
+
 </template>
 
 <script>
@@ -45,14 +62,19 @@ export default {
       audioSrc: ['/cx-test/static/test3.mp3', '/cx-test/static/test3.mp3', '/cx-test/static/test3.mp3']
     }
   },
+  created () {
+    // this.print();
+  }
+  ,
   mounted () {
     // $('audio').click(() => {
-
+    this.print();
     // })
   },
   methods: {
     print () {
-      console.log('111');
+      var images = document.querySelectorAll(".apng-image");
+      for (var i = 0; i < images.length; i++) APNG.animateImage(images[i]);
     },
     switchMusic () {
 

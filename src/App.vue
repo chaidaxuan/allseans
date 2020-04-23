@@ -8,6 +8,8 @@
 </template>
 
 <script>
+
+
 export default {
   name: 'App',
   beforeRouteUpdate (to, from, next) {

@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import Apng from '@/components/Apng'
 import Video from '@/components/Video'
 import Select from '@/components/Select'
+import Share from '@/components/Share'
 import PageTransition from '@/components/PageTransition'
 Vue.use(Router)
 Router.prototype.goBack = function () {
@@ -33,6 +34,10 @@ export default new Router({
         path: '/select',
         name: 'Select',
         component: Select
+      }, {
+        path: '/share',
+        name: 'Share',
+        component: Share
       }]
   }
   ]
