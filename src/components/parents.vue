@@ -1,7 +1,8 @@
 <template>
-    <div>
-
-    </div>
+  <div>
+    <Select @isLogFn="lisLogFn"></Select>
+    <Share :isLog="selectedImgIndex"></Share>
+  </div>
 </template>
 
 <script>
@@ -9,35 +10,33 @@ import Select from '@/components/Select'
 import Share from '@/components/Share'
 
 export default {
-    name: 'Apng',
-    components: {
-        Select,
-        Share
-    },
-    data () {
-        return {
-            msg: 'Welcome to Your Vue.js App',
-            show: false,
-            imgIndex: 0,
-            imgSrc: '/cx-test/static/landscape.png',
-            imgsSrc: ['/cx-test/static/landscape.png', '/cx-test/static/road.png', '/cx-test/static/mountain.png', '/cx-test/static/apng.png',],
-            audioSrc: '../assets/audio/贵族乐团 - 旅行鸟鸣水声',
-            poems: [{ poem: ['你是四月早天里的云烟，', '黄昏吹着风的软，', '星子在无意中闪，', '细雨点洒在花前。'], info: { auth: '——林徽因', chapter: '《你是人间的四月天》节选' } },
-            { poem: ['最是那一低头的温柔', '象一朵水莲花不胜凉风的娇羞，', '道一声珍重，道一声珍重，', '那一声珍重里有蜜甜的忧愁', '沙扬娜拉'], info: { auth: '——徐志摩', chapter: '《沙扬娜拉》' } }
-            ]
-        }
-    },
-
-    mounted () {
-        let btn = this.$refs.btn
-        this.$refs.btn.click()
-        console.log('btn', btn)
-
-        this.print();
-    },
-    methods: {
-
+  name: 'Parents',
+  components: {
+    Select,
+    Share
+  },
+  data () {
+    return {
+      msg: 'Welcome to Your Vue.js App',
+      selectedImgIndex: -1,
+      selectedAudioIndex: -1,
     }
+  },
+
+  mounted () {
+    let btn = this.$refs.btn
+    this.$refs.btn.click()
+    console.log('btn', btn)
+
+    this.print();
+  },
+  methods: {
+    lisLogFn (imgIndex, audioIndex) {
+      debugger
+      this.selectedImgIndex = imgIndex;
+      this.selectedAudioIndex = audioIndex;
+    }
+  }
 }
 </script>
 

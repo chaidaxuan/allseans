@@ -3,8 +3,12 @@
     <!-- 横向移动标签 -->
     <button
       class="randomSelection"
-      @click="randomSelect()"
+      @click="randomSelect"
     >随机选择</button>
+    <button
+      class="randomSelection"
+      @click="toShare"
+    >进入分享页</button>
     <p>请选择想分享的视频</p>
     <div class="slide-box">
       <img
@@ -33,57 +37,57 @@
       id="message"
       style="display: block;"
     >apng-canvas needed</p>
-    <div>
-      <img
-        class="apng-image"
-        src="../assets/landscape.png"
-        style="width:200px;height:200px;"
-      >
-      <img
-        class="apng-image"
-        src="../assets/road.png"
-        style="width:200px;height:200px;"
-      >
-    </div>
+
   </div>
 
 </template>
 
-<script>
-export default {
-  name: 'Select',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App',
-      show: false,
-      selectedImg: -1,
-      selectedAudio: -1,
-      imgsSrc: ['/cx-test/static/landscape.png', '/cx-test/static/road.png', '/cx-test/static/mountain.png', '/cx-test/static/apng.png',],
-      audioSrc: ['/cx-test/static/test3.mp3', '/cx-test/static/test3.mp3', '/cx-test/static/test3.mp3']
-    }
-  },
-  created () {
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import Router from "vue-router";
+
+@Component({ components: {} })
+export default class Select extends Vue {
+  $router!: Router;
+
+  msg = "Welcome to Your Vue.js App";
+  show = false;
+  selectedImg = -1;
+  selectedAudio = -1;
+  imgsSrc = ["/landscape.png", "/road.png", "/mountain.png", "/apng.png"];
+  audioSrc = ["/test3.mp3", "/test3.mp3", "/cx-testtest3.mp3"];
+
+  created() {
     // this.print();
   }
-  ,
-  mounted () {
+  mounted() {
     // $('audio').click(() => {
     this.print();
+    this.$on("xxx1", (x: any) => console.log("xxx1XX: ", x));
     // })
-  },
-  methods: {
-    print () {
-      var images = document.querySelectorAll(".apng-image");
-      for (var i = 0; i < images.length; i++) APNG.animateImage(images[i]);
-    },
-    switchMusic () {
+  }
 
-    },
-    randomSelect () {
-      let imgMax = this.imgsSrc.length;
-      this.selectedImg = Math.floor(Math.random() * (imgMax + 1));
-      this.selectedAudio = Math.floor(Math.random() * (3 + 1));
-    }
+  print() {
+    var images = document.querySelectorAll(".apng-image");
+    for (var i = 0; i < images.length; i++) window.APNG.animateImage(images[i]);
+  }
+  switchMusic() {}
+  randomSelect() {
+    let imgMax = this.imgsSrc.length;
+    this.selectedImg = Math.floor(Math.random() * (imgMax + 1));
+    this.selectedAudio = Math.floor(Math.random() * (3 + 1));
+    debugger;
+    let data = { selectedImg: this.selectedImg };
+    this.$emit("xxx1", data);
+    debugger;
+  }
+  toShare() {
+    let imgMax = this.imgsSrc.length;
+    this.selectedImg = Math.floor(Math.random() * (imgMax + 1));
+    this.selectedAudio = Math.floor(Math.random() * (3 + 1));
+    let data = { selectedImg: this.selectedImg.toString() };
+    console.log("data:", data);
+    this.$router.push({ name: "Share", params: data });
   }
 }
 </script>

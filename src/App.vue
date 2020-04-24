@@ -1,17 +1,31 @@
 <template>
-  <transition
-    name='transitionName'
-    keep-alive
-  >
-    <router-view />
-  </transition>
+  <div>
+    <transition
+      name='transitionName'
+      keep-alive
+    >
+      <router-view />
+    </transition>
+  </div>
 </template>
 
 <script>
-
+import Select from "./components/Select.vue";
+import Share from "./components/Share.vue";
 
 export default {
   name: 'App',
+  components: {
+    Select,
+    Share
+  },
+  data () {
+    return {
+      msg: 'Welcome to Your Vue.js App',
+      selectedImgIndex: -1,
+      selectedAudioIndex: -1,
+    }
+  },
   beforeRouteUpdate (to, from, next) {
     let isBack = this.$router.isBack;
     if (isBack) {
@@ -20,7 +34,8 @@ export default {
       this.transitionName = 'slide-left'
     }
     this.$router.isBack = false;
-  }
+  },
+  methods: {}
 }
 
 
@@ -37,9 +52,14 @@ export default {
 }
 body {
   margin: 0px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 html {
   background-color: #fffdf4;
+  width: 100%;
+  height: 100%;
 }
 @font-face {
   font-family: "iconfont"; /* project id 1769893 */

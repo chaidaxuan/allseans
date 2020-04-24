@@ -1,21 +1,30 @@
 <template>
-    <div class="share-wrap">
-
-    </div>
+  <div class="share-wrap">
+    你选择的图片为{{Islogin}}
+  </div>
 </template>
 
 <script>
 export default {
-    name: 'Share',
-    data () {
-        return {
-            msg: 'Welcome to Your Vue.js App',
-            show: false
-        }
-    },
-    mounted () {
-
+  name: 'Share',
+  props: ['isLog'],
+  data () {
+    return {
+      msg: 'Welcome to Your Vue.js App',
+      show: false
     }
+  },
+  computed: {
+    Islogin () {
+      return this.isLog;
+    }
+  },
+  mounted () {
+    console.log("拿到了：", this.$route.params);
+  },
+  activated () {
+    console.log("activated")
+  }
 
 }
 </script>
