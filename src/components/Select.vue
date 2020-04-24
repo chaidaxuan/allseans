@@ -1,6 +1,52 @@
 <template>
-  <div style="margin:8px;width:calc(100vw - 16px)">
-    <!-- 横向移动标签 -->
+  <div class="apng-wrap">
+    <audio
+      class='audio'
+      src="../assets/output2.mp3"
+      autoplay
+    ></audio>
+    <canvas
+      ref="theCanvas"
+      class="canvas-apng"
+      width="352"
+      height="640"
+    >
+
+    </canvas>
+
+    <!-- 动画播放按钮 -->
+    <button
+      @click="show = true"
+      ref="btn"
+      style="display:none"
+    >动画</button>
+    <!-- 诗句显示 -->
+    <transition name="slide-fade">
+      <div
+        v-if="show"
+        class="poem-wrap"
+      >
+        <div class="poem">
+          <div
+            v-for="(item,i) in  poems[0].poem"
+            :key='i'
+          >{{item}}<br></div>
+          <div class="poem-info">{{poems[0].info.auth}}<br></div>
+          <div class="poem-info">{{poems[0].info.chapter}}<br></div>
+        </div>
+      </div>
+    </transition>
+    <!-- 立即分享按钮 -->
+    <!-- 定制专属诗签按钮 -->
+    <button class="select-poem"> 随机诗歌 </button>
+    <button
+      class="select-video"
+      @click="randomVideo()"
+    > 随机视频 </button>
+    <button class="select-music"> 随机音乐 </button>
+
+  </div>
+  <!-- <div style="margin:8px;width:calc(100vw - 16px)">
     <button
       class="randomSelection"
       @click="randomSelect"
@@ -37,9 +83,7 @@
       id="message"
       style="display: block;"
     >apng-canvas needed</p>
-
-  </div>
-
+  </div> -->
 </template>
 
 <script lang="ts">
@@ -49,27 +93,32 @@ import Router from "vue-router";
 @Component({ components: {} })
 export default class Select extends Vue {
   $router!: Router;
+  $refs!: {
+    theCanvas: HTMLCanvasElement;
+  };
 
   msg = "Welcome to Your Vue.js App";
   show = false;
   selectedImg = -1;
   selectedAudio = -1;
-  imgsSrc = ["/landscape.png", "/road.png", "/mountain.png", "/apng.png"];
+  imgsSrc = [
+    { path: require("../assets/landscape.png"), width: 528, height: 960 },
+    { path: require("../assets/mountain.png"), width: 352, height: 640 }
+  ];
   audioSrc = ["/test3.mp3", "/test3.mp3", "/cx-testtest3.mp3"];
+  imgWidth = 320;
+  imgheight = 640;
 
-  created() {
-    // this.print();
-  }
+  created() {}
   mounted() {
     // $('audio').click(() => {
-    this.print();
+    this.randomVideo();
     this.$on("xxx1", (x: any) => console.log("xxx1XX: ", x));
     // })
   }
-
   print() {
-    var images = document.querySelectorAll(".apng-image");
-    for (var i = 0; i < images.length; i++) window.APNG.animateImage(images[i]);
+    this.imgWidth = this.imgsSrc[0].width;
+    this.imgheight = this.imgsSrc[0].height;
   }
   switchMusic() {}
   randomSelect() {
@@ -82,12 +131,48 @@ export default class Select extends Vue {
     debugger;
   }
   toShare() {
-    let imgMax = this.imgsSrc.length;
-    this.selectedImg = Math.floor(Math.random() * (imgMax + 1));
+    let imgMax = this.imgsSrc.length - 1;
+    this.selectedImg = Math.floor(Math.random() * (1 + 1));
     this.selectedAudio = Math.floor(Math.random() * (3 + 1));
     let data = { selectedImg: this.selectedImg.toString() };
+
     console.log("data:", data);
     this.$router.push({ name: "Share", params: data });
+  }
+
+  animations: { [key: string]: Promise<IAnimation> } = {};
+  getAnimation(url: string): Promise<IAnimation> {
+    if (!this.animations[url]) {
+      this.animations[url] = APNG.parseURL(url);
+    }
+
+    return this.animations[url];
+  }
+
+  currentAnimation: IAnimation | null = null;
+  downloading = false;
+  async randomVideo() {
+    if (this.downloading) {
+      return;
+    }
+    this.downloading = true;
+    let imgMax = this.imgsSrc.length - 1;
+    let ctx = this.$refs.theCanvas.getContext("2d");
+    this.selectedImg = Math.floor(Math.random() * (1 + 1));
+    this.imgWidth = this.imgsSrc[this.selectedImg].width;
+    this.imgheight = this.imgsSrc[this.selectedImg].height;
+
+    if (this.currentAnimation) {
+      this.currentAnimation.removeContext(ctx!);
+    }
+
+    const animation = await this.getAnimation(
+      this.imgsSrc[this.selectedImg].path
+    );
+    animation.play();
+    animation.addContext(ctx!);
+    this.currentAnimation = animation;
+    this.downloading = false;
   }
 }
 </script>
@@ -143,5 +228,63 @@ img {
   border: 3px solid black;
   border-radius: 5px;
   background-color: transparent;
+}
+.select-video {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  /* top: 0; */
+  border: 1px solid black;
+  bottom: 20%;
+  width: 10rem;
+  height: 3rem;
+  background-color: transparent;
+  color: white;
+  -o-object-fit: contain;
+  object-fit: contain;
+  font-size: 2em;
+}
+.select-music {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  /* top: 0; */
+  border: 1px solid black;
+  bottom: 10%;
+  width: 10rem;
+  height: 3rem;
+  background-color: transparent;
+  color: white;
+  -o-object-fit: contain;
+  object-fit: contain;
+  font-size: 2em;
+}
+.select-poem {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  /* top: 0; */
+  border: 1px solid black;
+  bottom: 30%;
+  width: 10rem;
+  height: 3rem;
+  background-color: transparent;
+  color: white;
+  -o-object-fit: contain;
+  object-fit: contain;
+  font-size: 2em;
+}
+.apng-wrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.canvas-apng {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 </style>

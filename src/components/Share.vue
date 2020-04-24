@@ -1,31 +1,46 @@
 <template>
   <div class="share-wrap">
-    你选择的图片为{{Islogin}}
+    canvas
+    <canvas
+      ref="theCanvas"
+      class="canvas-apng"
+      width="300"
+      height="300"
+    >
+
+    </canvas>
+    img
+    <img ref="theImg">
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Share',
-  props: ['isLog'],
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App',
-      show: false
-    }
-  },
-  computed: {
-    Islogin () {
-      return this.isLog;
-    }
-  },
-  mounted () {
-    console.log("拿到了：", this.$route.params);
-  },
-  activated () {
-    console.log("activated")
-  }
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import Router from "vue-router";
 
+@Component({ components: {} })
+export default class Share extends Vue {
+  $router!: Router;
+  $refs!: {
+    theCanvas: HTMLCanvasElement;
+    theImg: HTMLImageElement;
+  };
+  created() {}
+  mounted() {
+    let ctx = this.$refs.theCanvas.getContext("2d");
+    let theImg = this.$refs.theImg;
+    ctx!.fillStyle = "#FF0000";
+    ctx!.fillRect(0, 0, 150, 75);
+    // this.$refs.theCanvas.toBlob(blob => {
+    //   let url = URL.createObjectURL(blob);
+    //   debugger;
+    //   this.$refs.theImg.src = url;
+    //   debugger;
+    // });
+    // debugger;
+    this.$refs.theImg.src = this.$refs.theCanvas.toDataURL();
+    debugger;
+  }
 }
 </script>
 

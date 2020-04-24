@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app-div">
     <transition
       name='transitionName'
       keep-alive
@@ -96,5 +96,9 @@ html {
   opacity: 0;
   -webkit-transform: translate(-50px, 0);
   transform: translate(-50px, 0);
+}
+.app-div {
+  width: 100%;
+  height: 100%;
 }
 </style>

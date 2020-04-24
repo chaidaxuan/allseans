@@ -3,14 +3,9 @@
     <div class="apng-wrap">
       <audio
         class='audio'
-        src="/cx-test/output2.mp3"
+        src="../assets/output2.mp3"
         autoplay
       ></audio>
-      <!-- <img
-        class="apng-image"
-        src="../assets/mountain.png"
-        style="width: 100vw;height: 100vh;object-fit:cover;"
-      > -->
       <canvas
         id="apng-canvas"
         width="352"
@@ -48,6 +43,7 @@
       <img
         class="share-btn"
         src='../assets/share.png'
+        @click="clear()"
       >
       <img
         class="customize-btn"
@@ -73,12 +69,10 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       show: false,
       imgIndex: 0,
-      imgSrc: '/landscape.png',
-      imgsSrc: ['/landscape.png', '/road.png', '/mountain.png', '/apng.png',],
       audioSrc: '../assets/audio/贵族乐团 - 旅行鸟鸣水声',
       poems: [{ poem: ['你是四月早天里的云烟，', '黄昏吹着风的软，', '星子在无意中闪，', '细雨点洒在花前。'], info: { auth: '——林徽因', chapter: '《你是人间的四月天》节选' } },
       { poem: ['最是那一低头的温柔', '象一朵水莲花不胜凉风的娇羞，', '道一声珍重，道一声珍重，', '那一声珍重里有蜜甜的忧愁', '沙扬娜拉'], info: { auth: '——徐志摩', chapter: '《沙扬娜拉》' } }
-      ]
+      ],
     }
   },
 
@@ -98,8 +92,6 @@ export default {
       this.imgSrc = this.imgsSrc[this.imgIndex];
     },
     print () {
-      // $("#one").find("img").each(function () { APNG.animateImage(this); console.log('1') });
-
       var images = document.querySelectorAll(".apng-image");
       console.log('images', images);
       for (var i = 0; i < images.length; i++) APNG.animateImage(images[i]);
@@ -110,7 +102,11 @@ export default {
       }).catch(e => {
         console.error("error:", e);
       });
+
     },
+    clear () {
+
+    }
   }
 }
 </script>
