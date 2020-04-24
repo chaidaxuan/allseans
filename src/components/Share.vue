@@ -1,16 +1,12 @@
 <template>
   <div class="share-wrap">
-    canvas
     <canvas
       ref="theCanvas"
       class="canvas-apng"
-      width="300"
-      height="300"
+      :width="imgWidth"
+      :height="imgheight"
     >
-
     </canvas>
-    img
-    <img ref="theImg">
   </div>
 </template>
 
@@ -25,21 +21,52 @@ export default class Share extends Vue {
     theCanvas: HTMLCanvasElement;
     theImg: HTMLImageElement;
   };
+  imgWidth = 320;
+  imgheight = 640;
+  selectedImg = -1;
+  imgsSrc = [
+    { path: require("../assets/landscape.png"), width: 528, height: 960 },
+    { path: require("../assets/mountain.png"), width: 352, height: 640 }
+  ];
+
   created() {}
   mounted() {
-    let ctx = this.$refs.theCanvas.getContext("2d");
-    let theImg = this.$refs.theImg;
-    ctx!.fillStyle = "#FF0000";
-    ctx!.fillRect(0, 0, 150, 75);
-    // this.$refs.theCanvas.toBlob(blob => {
-    //   let url = URL.createObjectURL(blob);
-    //   debugger;
-    //   this.$refs.theImg.src = url;
-    //   debugger;
-    // });
+    console.log("this.$route.query", this.$route.params.selectedImg);
+    this.selectedImg = parseInt(this.$route.params.selectedImg);
+    // this.print();
+
+    // let ctx = this.$refs.theCanvas.getContext("2d");
+    // let theImg = this.$refs.theImg;
+    // ctx!.fillStyle = "#FF0000";
+    // ctx!.fillRect(0, 0, 150, 75);
+    // ctx!.fillText("testtest", 10, 10);
+    // ctx!.font = "30px Verdana";
+    // ctx!.fillStyle = "#";
+    // // this.$refs.theCanvas.toBlob(blob => {
+    // //   let url = URL.createObjectURL(blob);
+    // //   debugger;
+    // //   this.$refs.theImg.src = url;
+    // //   debugger;
+    // // });
+    // // debugger;
+    // this.$refs.theImg.src = this.$refs.theCanvas.toDataURL();
     // debugger;
-    this.$refs.theImg.src = this.$refs.theCanvas.toDataURL();
-    debugger;
+  }
+  print() {
+    // var images = document.querySelectorAll(".apng-image");
+    // console.log("images", images);
+    // for (var i = 0; i < images.length; i++) APNG.animateImage(images[i]);
+    // let canvansTest = document.getElementById("apng-canvas");
+    // APNG.animateContext(
+    //   require("../assets/landscape.png"),
+    //   canvansTest.getContext("2d")
+    // )
+    //   .then(a => {
+    //     console.log("fullfilled:", a);
+    //   })
+    //   .catch(e => {
+    //     console.error("error:", e);
+    //   });
   }
 }
 </script>

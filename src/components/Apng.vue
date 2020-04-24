@@ -1,18 +1,18 @@
 <template>
-  <div>
+  <div class="app-wrap">
     <div class="apng-wrap">
       <audio
         class='audio'
         src="../assets/output2.mp3"
         autoplay
       ></audio>
+
       <canvas
         id="apng-canvas"
-        width="352"
-        height="640"
+        :width="imgWidth"
+        :height="imgheight"
         style="width: 100%;height: 100%;object-fit:cover;"
       >
-
       </canvas>
 
       <!-- 动画播放按钮 -->
@@ -43,12 +43,16 @@
       <img
         class="share-btn"
         src='../assets/share.png'
-        @click="clear()"
       >
       <img
         class="customize-btn"
         src='../assets/customize-btn.png'
         @click="routeToCustomize()"
+      >
+      <!-- 全季logo -->
+      <img
+        class="title-img"
+        src='../assets/title.png'
       >
     </div>
   </div>
@@ -64,11 +68,18 @@ export default {
     Select,
     Share
   },
+
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
       show: false,
       imgIndex: 0,
+      imgsSrc: [
+        { path: require("../assets/landscape.png"), width: 528, height: 960 },
+        { path: require("../assets/mountain.png"), width: 352, height: 640 }
+      ],
+      imgWidth: 528,
+      imgheight: 960,
       audioSrc: '../assets/audio/贵族乐团 - 旅行鸟鸣水声',
       poems: [{ poem: ['你是四月早天里的云烟，', '黄昏吹着风的软，', '星子在无意中闪，', '细雨点洒在花前。'], info: { auth: '——林徽因', chapter: '《你是人间的四月天》节选' } },
       { poem: ['最是那一低头的温柔', '象一朵水莲花不胜凉风的娇羞，', '道一声珍重，道一声珍重，', '那一声珍重里有蜜甜的忧愁', '沙扬娜拉'], info: { auth: '——徐志摩', chapter: '《沙扬娜拉》' } }
@@ -79,8 +90,6 @@ export default {
   mounted () {
     let btn = this.$refs.btn
     this.$refs.btn.click()
-    console.log('btn', btn)
-
     this.print();
   },
   methods: {
@@ -97,12 +106,11 @@ export default {
       for (var i = 0; i < images.length; i++) APNG.animateImage(images[i]);
 
       let canvansTest = document.getElementById('apng-canvas');
-      APNG.animateContext(require('../assets/mountain.png'), canvansTest.getContext("2d")).then(a => {
+      APNG.animateContext(require('../assets/landscape.png'), canvansTest.getContext("2d")).then(a => {
         console.log("fullfilled:", a);
       }).catch(e => {
         console.error("error:", e);
       });
-
     },
     clear () {
 
@@ -185,7 +193,7 @@ video {
   font-size: 30px;
   padding: 0px;
   background-color: transparent;
-  top: 50px;
+  top: 10%;
   right: 50px;
   font-family: "Microsoft YaHei";
 }
@@ -234,5 +242,19 @@ video {
   width: 100%;
   height: 100%;
   position: relative;
+}
+.title-img {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 5%;
+  width: 20%;
+  height: 3%;
+  object-fit: contain;
+}
+.app-wrap {
+  width: 100%;
+  height: 100%;
 }
 </style>

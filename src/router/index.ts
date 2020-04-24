@@ -5,6 +5,7 @@ import Apng from '@/components/Apng.vue'
 import Video from '@/components/Video.vue'
 import Select from '@/components/Select.vue'
 import Share from '@/components/Share.vue'
+import apngTest from '@/components/apngTest.vue'
 
 Vue.use(Router);
 (Router.prototype as any).goBack = function () {
@@ -25,6 +26,10 @@ export default new Router({
     path: '/apng',
     name: 'Apng',
     component: Apng
+  }, {
+    path: '/apngTest',
+    name: 'apngTest',
+    component: apngTest
   }, {
     path: '/select',
     name: 'Select',

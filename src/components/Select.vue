@@ -8,8 +8,8 @@
     <canvas
       ref="theCanvas"
       class="canvas-apng"
-      width="352"
-      height="640"
+      :width="imgWidth"
+      :height="imgheight"
     >
 
     </canvas>
@@ -44,6 +44,10 @@
       @click="randomVideo()"
     > 随机视频 </button>
     <button class="select-music"> 随机音乐 </button>
+    <button
+      class="share-btn"
+      @click="share()"
+    > 发布页面 </button>
 
   </div>
   <!-- <div style="margin:8px;width:calc(100vw - 16px)">
@@ -101,6 +105,7 @@ export default class Select extends Vue {
   show = false;
   selectedImg = -1;
   selectedAudio = -1;
+  selectedPoem = 0;
   imgsSrc = [
     { path: require("../assets/landscape.png"), width: 528, height: 960 },
     { path: require("../assets/mountain.png"), width: 352, height: 640 }
@@ -111,10 +116,8 @@ export default class Select extends Vue {
 
   created() {}
   mounted() {
-    // $('audio').click(() => {
     this.randomVideo();
     this.$on("xxx1", (x: any) => console.log("xxx1XX: ", x));
-    // })
   }
   print() {
     this.imgWidth = this.imgsSrc[0].width;
@@ -125,18 +128,14 @@ export default class Select extends Vue {
     let imgMax = this.imgsSrc.length;
     this.selectedImg = Math.floor(Math.random() * (imgMax + 1));
     this.selectedAudio = Math.floor(Math.random() * (3 + 1));
-    debugger;
     let data = { selectedImg: this.selectedImg };
     this.$emit("xxx1", data);
-    debugger;
   }
   toShare() {
     let imgMax = this.imgsSrc.length - 1;
     this.selectedImg = Math.floor(Math.random() * (1 + 1));
     this.selectedAudio = Math.floor(Math.random() * (3 + 1));
     let data = { selectedImg: this.selectedImg.toString() };
-
-    console.log("data:", data);
     this.$router.push({ name: "Share", params: data });
   }
 
@@ -156,6 +155,7 @@ export default class Select extends Vue {
       return;
     }
     this.downloading = true;
+
     let imgMax = this.imgsSrc.length - 1;
     let ctx = this.$refs.theCanvas.getContext("2d");
     this.selectedImg = Math.floor(Math.random() * (1 + 1));
@@ -173,6 +173,14 @@ export default class Select extends Vue {
     animation.addContext(ctx!);
     this.currentAnimation = animation;
     this.downloading = false;
+  }
+
+  share() {
+    let data = {
+      selectedImg: this.selectedImg.toString(),
+      selectedPoem: this.selectedPoem.toString()
+    };
+    this.$router.push({ name: "Share", params: data });
   }
 }
 </script>
@@ -286,5 +294,21 @@ img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.share-btn {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  /* top: 0; */
+  border: 1px solid black;
+  bottom: 1px;
+  width: 10rem;
+  height: 3rem;
+  background-color: transparent;
+  color: white;
+  -o-object-fit: contain;
+  object-fit: contain;
+  font-size: 2em;
 }
 </style>
