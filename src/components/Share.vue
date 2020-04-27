@@ -85,7 +85,7 @@ export default class Share extends Vue {
     this.canvasHight = this.baseMap[0].height;
 
     imgBase.onload = function() {
-      ctx!!.drawImage(imgBase as HTMLImageElement, 0, 0);
+      ctx!.drawImage(imgBase as HTMLImageElement, 0, 0);
       that.printPoem();
       that.printQCode();
     };
@@ -132,7 +132,7 @@ export default class Share extends Vue {
     let imgQRCode = new Image();
     imgQRCode.src = require("../assets/QRCode.png");
     imgQRCode.onload = function() {
-      ctx!!.drawImage(imgQRCode as HTMLImageElement, 30, 30);
+      ctx!.drawImage(imgQRCode as HTMLImageElement, 100, 30);
     };
   }
   save() {

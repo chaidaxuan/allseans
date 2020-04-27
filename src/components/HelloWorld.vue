@@ -6,10 +6,6 @@
 
     </div>
     <div>
-      <router-link to="./video">video页面
-      </router-link>
-    </div>
-    <div>
       <router-link to="./select">选择模板页面
       </router-link>
     </div>
@@ -28,7 +24,6 @@ export default {
   mounted () {
 
   }
-
 }
 </script>
 

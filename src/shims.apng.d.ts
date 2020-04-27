@@ -1,5 +1,3 @@
-
-
 declare interface IAnimation {
     width: number;
     height: number;

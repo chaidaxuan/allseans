@@ -15,7 +15,16 @@
         style="width: 100%;height: 100%;object-fit:cover;"
       >
       </canvas>
+      <!-- 用于绘制画布 -->
+      <canvas
+        ref="theCanvas"
+        class="canvas-apng"
+        :width="canvasWidth"
+        :height="canvasHight"
+        style="width:100%;height:100%;display:none;"
+      >
 
+      </canvas>
       <!-- 动画播放按钮 -->
       <button
         @click="show = true"
@@ -76,7 +85,7 @@
 <script>
 import Select from '@/components/Select'
 import Share from '@/components/Share'
-
+import QRCode from 'qrcodejs2'
 export default {
   name: 'Apng',
   components: {
@@ -103,6 +112,8 @@ export default {
       ],
       imgWidth: 528,
       imgheight: 960,
+      canvasWidth: 0,
+      canvasHight: 0,
       isOldCustomer: false,
       poems: [{ poem: ['你是四月早天里的云烟，', '黄昏吹着风的软，', '星子在无意中闪，', '细雨点洒在花前。'], info: { auth: '——林徽因', chapter: '《你是人间的四月天》节选' } },
       { poem: ['最是那一低头的温柔', '象一朵水莲花不胜凉风的娇羞，', '道一声珍重，道一声珍重，', '那一声珍重里有蜜甜的忧愁', '沙扬娜拉'], info: { auth: '——徐志摩', chapter: '《沙扬娜拉》' } }
@@ -116,7 +127,11 @@ export default {
           path: require("../assets/audio/output3.mp3"),
           title: "output3"
         }
-      ]
+      ],
+      baseMap: [
+        { path: require("../assets/普通底图.png"), width: 370, height: 670 },
+        { path: require("../assets/普通底图2.jpg"), width: 411, height: 731 },
+      ],
     }
   },
 
@@ -134,52 +149,8 @@ export default {
     let btn = this.$refs.btn;
     this.$refs.btn.click();
 
-    //播放视频
+    //播放视频 
     this.print();
-    if (this.isOldCustomer) {
-      let image = new Image();
-      if (this.selectedImgIndex === '0' && this.selectedPoemIndex === '1') {
-        let image = new Image();
-        image.src = require('../assets/0-1.png');
-        image.onload = function () {
-          let base64 = that.getBase64Image(image);
-          that.$refs.theImg.src = base64;
-          console.log(base64);
-        }
-      }
-      if (this.selectedImgIndex === '0' && this.selectedPoemIndex === '0') {
-        let image = new Image();
-        image.src = require('../assets/0-0.png');
-        image.onload = function () {
-          let base64 = that.getBase64Image(image);
-          that.$refs.theImg.src = base64;
-          console.log(base64);
-        }
-      }
-      if (this.selectedImgIndex === '1' && this.selectedPoemIndex === '1') {
-        let image = new Image();
-        image.src = require('../assets/1-1.png');
-        image.onload = function () {
-          let base64 = that.getBase64Image(image);
-          that.$refs.theImg.src = base64;
-          console.log(base64);
-        }
-      }
-      if (this.selectedImgIndex === '1' && this.selectedPoemIndex === '0') {
-        let image = new Image();
-        debugger
-        image.src = require('../assets/1-0.png');
-        image.onload = function () {
-          let base64 = that.getBase64Image(image);
-          that.$refs.theImg.src = base64;
-          debugger
-          console.log(base64);
-        }
-        debugger
-      }
-    } else {
-      this.canSave = false;
-    }
 
     //  wx.config({
     //    　　debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来
@@ -193,12 +164,21 @@ export default {
     //      　] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
     // 　　});
 
-    //wx自动播放声音
-    wx.ready(function () {
-      let audio = document.getElementById("audioPlay");
-      audio.play();
-    })
+    // wx 自动播放声音
+    if (window.wx) {
+      window.wx.ready(function () {
+        let audio = document.getElementById("audioPlay");
+        audio.play();
+      });
+    }
 
+    //画要下载的图片
+    if (this.isOldCustomer) {
+      this.printSaveImg();
+      debugger
+    } else {
+      this.canSave = false;
+    }
   },
   methods: {
     routeToCustomize () {
@@ -240,6 +220,86 @@ export default {
       var ext = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase();
       var dataURL = canvas.toDataURL("image/" + ext);
       return dataURL;
+    },
+    printSaveImg () {
+      debugger
+      let that = this;
+      let ctx = this.$refs.theCanvas.getContext("2d");
+      debugger
+      let img = this.$refs.theImg;
+      let imgBase = new Image();
+      imgBase.src = this.baseMap[this.selectedImgIndex].path;
+      this.canvasWidth = this.baseMap[this.selectedImgIndex].width;
+      this.canvasHight = this.baseMap[this.selectedImgIndex].height;
+
+      debugger
+      imgBase.onload = function () {
+        ctx.drawImage(imgBase, 0, 0);
+        that.printPoem();
+        that.printQCode();
+        debugger
+        that.$refs.theImg.src = that.$refs.theCanvas.toDataURL();
+        debugger
+      };
+    },
+    printPoem () {
+      let ctx = this.$refs.theCanvas.getContext("2d");
+      ctx.font = "16px bold 黑体";
+      ctx.fillStyle = "#FFFFFF";
+      // ctx!!.fillText("你是四月早天里的云烟,", 100, 150);
+      // ctx!!.fillText("你是四月早天里的云烟,", 200, 200);
+      // 诗词竖排控制
+      this.poems[this.selectedPoemIndex].poem.forEach((text, index) => {
+        let name = text; // 文本内容
+        let x = 100 + index * 25,
+          y = 100; // 文字开始的坐标
+        let letterSpacing = 5; // 设置字间距
+        for (let i = 0; i < name.length; i++) {
+          const str = name.slice(i, i + 1).toString();
+          if (str.match(/[A-Za-z0-9]/) && y < 576) {
+            // 非汉字 旋转
+            ctx.save();
+            //保存当前的绘图状态
+            ctx.translate(x, y);
+            ctx.rotate((Math.PI / 180) * 90);
+            ctx.textBaseline = "bottom";
+            ctx.fillText(str, 0, 0);
+            ctx.restore();
+            y += ctx.measureText(str).width + letterSpacing; // 计算文字宽度
+          } else if (str.match(/[\u4E00-\u9FA5]/) && y < 576) {
+            ctx.save();
+            ctx.textBaseline = "top";
+            ctx.fillText(str, x, y);
+            ctx.restore();
+            y += ctx.measureText(str).width + letterSpacing; // 计算文字宽度
+          }
+        }
+      })
+    },
+
+    // 画二维码部分
+    printQCode () {
+      // 生成二维码
+      // let url = window.location.href;
+      // console.log('window.location.href', url);
+      // let qrcode = new QRCode("test", {
+      //   text: url,
+      //   width: 70,
+      //   height: 70,
+      //   colorDark: "#000000",
+      //   colorLight: "#ffffff",
+      //   correctLevel: QRCode.CorrectLevel.H
+      // });
+
+
+      let that = this;
+      let ctx = this.$refs.theCanvas.getContext("2d");
+      let imgQRCode = new Image();
+      imgQRCode.src = require("../assets/QRCode.png");
+      imgQRCode.onload = function () {
+        ctx.drawImage(imgQRCode, 30, 30);
+        that.$refs.theImg.src = that.$refs.theCanvas.toDataURL();
+      };
     }
   }
 }

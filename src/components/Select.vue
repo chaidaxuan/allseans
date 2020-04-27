@@ -1,6 +1,7 @@
 <template>
   <div class="apng-wrap">
     <audio
+      id="audioPlay"
       class='audio'
       :src="audios[selectedAudio].path"
       autoplay
@@ -62,6 +63,7 @@
     > 随机视频 </button>
     <button
       class="select-music"
+      ref="theBtnMusic"
       @click="randomMusic()"
     > 随机音乐 </button>
     <button
@@ -86,11 +88,13 @@ export default class Select extends Vue {
   $refs!: {
     theCanvas: HTMLCanvasElement;
     btn: HTMLButtonElement;
+    theAudio: HTMLAudioElement;
+    theBtnMusic: HTMLButtonElement;
   };
 
   msg = "Welcome to Your Vue.js App";
   show = false;
-  selectedImg = -1;
+  selectedImg = 0;
   selectedAudio = 0;
   selectedPoem = 0;
   imgsSrc = [
@@ -133,16 +137,19 @@ export default class Select extends Vue {
 
   created() {}
   mounted() {
+    if (window.wx) {
+      window.wx.ready(function() {
+        let audio = <HTMLVideoElement>document.getElementById("audioPlay");
+        audio.play();
+      });
+    }
+
     this.randomVideo();
 
+    this.$refs.theBtnMusic.click();
     //播放诗歌动画
     let btn = this.$refs.btn;
     this.$refs.btn.click();
-
-    wx.ready(function() {
-      let audio = document.getElementById("audioPlay");
-      audio!.play();
-    });
   }
   print() {
     this.imgWidth = this.imgsSrc[0].width;
@@ -152,9 +159,8 @@ export default class Select extends Vue {
   randomSelect() {
     let imgMax = this.imgsSrc.length;
     this.selectedImg = Math.floor(Math.random() * (imgMax + 1));
-    this.selectedAudio = Math.floor(Math.random() * (3 + 1));
+    this.selectedAudio = Math.floor(Math.random() * (1 + 1));
     let data = { selectedImg: this.selectedImg };
-    this.$emit("xxx1", data);
   }
   toShare() {
     let imgMax = this.imgsSrc.length - 1;
@@ -175,7 +181,6 @@ export default class Select extends Vue {
     if (!this.animations[url]) {
       this.animations[url] = APNG.parseURL(url);
     }
-
     return this.animations[url];
   }
 

@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld.vue'
 import Apng from '@/components/Apng.vue'
-import Video from '@/components/Video.vue'
 import Select from '@/components/Select.vue'
 import Share from '@/components/Share.vue'
 import Entry from '@/components/Entry.vue'
@@ -20,10 +19,6 @@ export default new Router({
     path: '/',
     name: 'HelloWorld',
     component: HelloWorld
-  }, {
-    path: '/video',
-    name: 'Video',
-    component: Video
   }, {
     path: '/apng/:cid',
     name: 'Apng',
