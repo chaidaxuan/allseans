@@ -122,11 +122,11 @@ export default class Select extends Vue {
   ];
   audios = [
     {
-      path: require("../assets/output2.mp3"),
+      path: require("../assets/audio/output2.mp3"),
       title: "output2"
     },
     {
-      path: require("../assets/output3.mp3"),
+      path: require("../assets/audio/output3.mp3"),
       title: "output3"
     }
   ];
@@ -134,11 +134,15 @@ export default class Select extends Vue {
   created() {}
   mounted() {
     this.randomVideo();
-    this.$on("xxx1", (x: any) => console.log("xxx1XX: ", x));
 
     //播放诗歌动画
     let btn = this.$refs.btn;
     this.$refs.btn.click();
+
+    wx.ready(function() {
+      let audio = document.getElementById("audioPlay");
+      audio!.play();
+    });
   }
   print() {
     this.imgWidth = this.imgsSrc[0].width;
@@ -208,6 +212,7 @@ export default class Select extends Vue {
     let params = {
       isOldCustomer: "true"
     };
+    // 三个参数分别为(图片,音频,诗歌);
     const hash =
       this.selectedImg.toString() +
       "-" +
@@ -235,7 +240,6 @@ export default class Select extends Vue {
     this.selectedAudio === 0
       ? (this.selectedAudio = 1)
       : (this.selectedAudio = 0);
-    console.log("this.selectedAudio", this.selectedAudio);
   }
 }
 </script>
@@ -299,7 +303,7 @@ a {
   color: white;
   -o-object-fit: contain;
   object-fit: contain;
-  font-size: 2em;
+  font-size: 1.5em;
 }
 .select-music {
   position: absolute;
@@ -315,7 +319,7 @@ a {
   color: white;
   -o-object-fit: contain;
   object-fit: contain;
-  font-size: 2em;
+  font-size: 1.5em;
 }
 .select-poem {
   position: absolute;
@@ -331,7 +335,7 @@ a {
   color: white;
   -o-object-fit: contain;
   object-fit: contain;
-  font-size: 2em;
+  font-size: 1.5em;
 }
 .apng-wrap {
   width: 100%;
@@ -357,7 +361,7 @@ a {
   color: white;
   -o-object-fit: contain;
   object-fit: contain;
-  font-size: 2em;
+  font-size: 1.5em;
 }
 
 .poem-wrap {

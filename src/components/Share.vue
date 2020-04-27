@@ -1,21 +1,21 @@
 <template>
   <div class="share-wrap">
-    <!-- <canvas
+    <canvas
       ref="theCanvas"
       class="canvas-apng"
-      :width="imgWidth"
-      :height="imgheight"
+      :width="canvasWidth"
+      :height="canvasHight"
       style="width:100%;height:100%;"
     >
-    </canvas> -->
-    <img
+    </canvas>
+    <!-- <img
       ref="theImg"
       style="width:100%;height:100%;"
       id="Basemap"
-    >
-    <button @click="save()">
+    > -->
+    <!-- <button @click="save()">
       测试按钮
-    </button>
+    </button> -->
   </div>
 </template>
 
@@ -30,12 +30,15 @@ export default class Share extends Vue {
     theCanvas: HTMLCanvasElement;
     theImg: HTMLImageElement;
   };
-  imgWidth = 528;
-  imgheight = 960;
+  canvasWidth = 528;
+  canvasHight = 960;
   selectedImg = -1;
   imgsSrc = [
     { path: require("../assets/3.png"), width: 528, height: 960 },
     { path: require("../assets/mountain.png"), width: 352, height: 640 }
+  ];
+  baseMap = [
+    { path: require("../assets/普通底图.png"), width: 370, height: 670 }
   ];
   poems = [
     {
@@ -72,32 +75,64 @@ export default class Share extends Vue {
     // this.$refs.theImg.src = this.$refs.theCanvas.toDataURL();
   }
   print() {
-    // let that = this;
-    // let ctx = this.$refs.theCanvas.getContext("2d");
-    // let img = this.$refs.theImg;
-    // let imgBase = new Image();
-    // imgBase.src = require("../assets/basemap.jpg");
-    // imgBase.onload = function() {
-    //   ctx!.drawImage(imgBase as HTMLImageElement, 0, 0);
-    //   that.printPoem();
-    //   that.printQCode();
-    // };
+    // 显示图片
+    let that = this;
+    let ctx = this.$refs.theCanvas.getContext("2d");
+    let img = this.$refs.theImg;
+    let imgBase = new Image();
+    imgBase.src = this.baseMap[0].path;
+    this.canvasWidth = this.baseMap[0].width;
+    this.canvasHight = this.baseMap[0].height;
+
+    imgBase.onload = function() {
+      ctx!!.drawImage(imgBase as HTMLImageElement, 0, 0);
+      that.printPoem();
+      that.printQCode();
+    };
   }
+
   // 写诗部分
   printPoem() {
     let ctx = this.$refs.theCanvas.getContext("2d");
-    ctx!.font = "24px bold 黑体";
-    ctx!.fillStyle = "#FF0000";
-    ctx!.fillText("你是四月早天里的云烟，", 100, 150);
+    ctx!.font = "16px bold 黑体";
+    ctx!.fillStyle = "#FFFFFF";
+    // ctx!!.fillText("你是四月早天里的云烟,", 100, 150);
+    // ctx!!.fillText("你是四月早天里的云烟,", 200, 200);
+    // 诗词竖排控制
+    let name = "你是四月早天里的云烟"; // 文本内容
+    let x = 50,
+      y = 50; // 文字开始的坐标
+    let letterSpacing = 5; // 设置字间距
+    for (let i = 0; i < name.length; i++) {
+      const str = name.slice(i, i + 1).toString();
+      debugger;
+      if (str.match(/[A-Za-z0-9]/) && y < 576) {
+        // 非汉字 旋转
+        ctx!.save();
+        //保存当前的绘图状态
+        ctx!.translate(x, y);
+        ctx!.rotate((Math.PI / 180) * 90);
+        ctx!.textBaseline = "bottom";
+        ctx!.fillText(str, 0, 0);
+        ctx!.restore();
+        y += ctx!.measureText(str).width + letterSpacing; // 计算文字宽度
+      } else if (str.match(/[\u4E00-\u9FA5]/) && y < 576) {
+        ctx!.save();
+        ctx!.textBaseline = "top";
+        ctx!.fillText(str, x, y);
+        ctx!.restore();
+        y += ctx!.measureText(str).width + letterSpacing; // 计算文字宽度
+      }
+    }
   }
 
   // 画二维码部分
   printQCode() {
     let ctx = this.$refs.theCanvas.getContext("2d");
-    let imgBase = new Image();
-    imgBase.src = require("../assets/aigen.png");
-    imgBase.onload = function() {
-      ctx!.drawImage(imgBase as HTMLImageElement, 150, 0);
+    let imgQRCode = new Image();
+    imgQRCode.src = require("../assets/QRCode.png");
+    imgQRCode.onload = function() {
+      ctx!!.drawImage(imgQRCode as HTMLImageElement, 30, 30);
     };
   }
   save() {
