@@ -25,7 +25,9 @@ declare interface IAnimation {
 }
 
 declare interface IAPNG {
-    parseURL(url: string): Promise<IAnimation>
+    parseURL(url: string): Promise<IAnimation>;
+    // animateContext()
+    animateContext(url: string, ctx: CanvasRenderingContext2D): Promise<any>;
 }
 
 

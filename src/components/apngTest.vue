@@ -1,61 +1,60 @@
 <template>
-    <div class="app-wrap">
-        <div class="apng-wrap">
-            <audio
-                class='audio'
-                src="../assets/output2.mp3"
-                autoplay
-            ></audio>
+  <div class="app-wrap">
+    <div class="apng-wrap">
+      <audio
+        class='audio'
+        src="../assets/output2.mp3"
+        autoplay
+      ></audio>
 
-            <canvas
-                id="apng-canvas"
-                :width="imgWidth"
-                :height="imgheight"
-                style="width: 100%;height: 100%;object-fit:cover;"
-            >
-            </canvas>
+      <canvas
+        id="apng-canvas"
+        :width="imgWidth"
+        :height="imgheight"
+        style="width: 100%;height: 100%;object-fit:cover;"
+      >
+      </canvas>
 
-            <!-- 动画播放按钮 -->
-            <button
-                @click="show = true"
-                ref="btn"
-                style="display:none"
-            >动画</button>
-            <!-- 诗句显示 -->
-            <transition name="slide-fade">
-                <div
-                    v-if="show"
-                    class="poem-wrap"
-                >
-                    <div class="poem">
-                        <div
-                            v-for="(item,i) in  poems[0].poem"
-                            :key='i'
-                        >{{item}}<br></div>
-                        <div class="poem-info">{{poems[0].info.auth}}<br></div>
-                        <div class="poem-info">{{poems[0].info.chapter}}<br></div>
-                    </div>
-                </div>
-            </transition>
-            <!-- 立即分享按钮 -->
-            <!-- 定制专属诗签按钮 -->
-
-            <img
-                class="share-btn"
-                src='../assets/share.png'
-            >
-            <img
-                class="customize-btn"
-                src='../assets/customize-btn.png'
-                @click="routeToCustomize()"
-            >
-            <!-- 全季logo -->
-            <img
-                class="title-img"
-                src='../assets/title.png'
-            >
+      <!-- 动画播放按钮 -->
+      <button
+        @click="show = true"
+        ref="btn"
+        style="display:none"
+      >动画</button>
+      <!-- 诗句显示 -->
+      <transition name="slide-fade">
+        <div
+          v-if="show"
+          class="poem-wrap"
+        >
+          <div class="poem">
+            <div
+              v-for="(item,i) in  poems[0].poem"
+              :key='i'
+            >{{item}}<br></div>
+            <div class="poem-info">{{poems[0].info.auth}}<br></div>
+            <div class="poem-info">{{poems[0].info.chapter}}<br></div>
+          </div>
         </div>
+      </transition>
+      <!-- 立即分享按钮 -->
+      <!-- 定制专属诗签按钮 -->
+
+      <img
+        class="share-btn"
+        src='../assets/share.png'
+      >
+      <img
+        class="customize-btn"
+        src='../assets/customize-btn.png'
+      >
+      <!-- 全季logo -->
+      <img
+        class="title-img"
+        src='../assets/title.png'
+      >
     </div>
+  </div>
 </template>
 
 <script>
@@ -63,59 +62,59 @@ import Select from '@/components/Select'
 import Share from '@/components/Share'
 
 export default {
-    name: 'apngTest',
-    components: {
-        Select,
-        Share
-    },
+  name: 'apngTest',
+  components: {
+    Select,
+    Share
+  },
 
-    data () {
-        return {
-            msg: 'Welcome to Your Vue.js App',
-            show: false,
-            imgIndex: 0,
-            imgsSrc: [
-                { path: require("../assets/landscape.png"), width: 528, height: 960 },
-                { path: require("../assets/mountain.png"), width: 352, height: 640 }
-            ],
-            imgWidth: 528,
-            imgheight: 960,
-            audioSrc: '../assets/audio/贵族乐团 - 旅行鸟鸣水声',
-            poems: [{ poem: ['你是四月早天里的云烟，', '黄昏吹着风的软，', '星子在无意中闪，', '细雨点洒在花前。'], info: { auth: '——林徽因', chapter: '《你是人间的四月天》节选' } },
-            { poem: ['最是那一低头的温柔', '象一朵水莲花不胜凉风的娇羞，', '道一声珍重，道一声珍重，', '那一声珍重里有蜜甜的忧愁', '沙扬娜拉'], info: { auth: '——徐志摩', chapter: '《沙扬娜拉》' } }
-            ],
-        }
-    },
-
-    mounted () {
-        let btn = this.$refs.btn
-        this.$refs.btn.click()
-        this.print();
-    },
-    methods: {
-        routeToCustomize () {
-            this.$router.push({ name: 'Select' });
-        },
-        routeToShare () {
-            this.imgIndex === 3 ? this.imgIndex = 0 : this.imgIndex++;
-            this.imgSrc = this.imgsSrc[this.imgIndex];
-        },
-        print () {
-            var images = document.querySelectorAll(".apng-image");
-            console.log('images', images);
-            for (var i = 0; i < images.length; i++) APNG.animateImage(images[i]);
-
-            let canvansTest = document.getElementById('apng-canvas');
-            APNG.animateContext(require('../assets/landscape.png'), canvansTest.getContext("2d")).then(a => {
-                console.log("fullfilled:", a);
-            }).catch(e => {
-                console.error("error:", e);
-            });
-        },
-        clear () {
-
-        }
+  data () {
+    return {
+      msg: 'Welcome to Your Vue.js App',
+      show: false,
+      imgIndex: 0,
+      imgsSrc: [
+        { path: require("../assets/mountain.png"), width: 528, height: 960 },
+        { path: require("../assets/3.png"), width: 352, height: 640 }
+      ],
+      imgWidth: 528,
+      imgheight: 960,
+      audioSrc: '../assets/audio/3.mp3',
+      poems: [{ poem: ['你是四月早天里的云烟，', '黄昏吹着风的软，', '星子在无意中闪，', '细雨点洒在花前。'], info: { auth: '——林徽因', chapter: '《你是人间的四月天》节选' } },
+      { poem: ['最是那一低头的温柔', '象一朵水莲花不胜凉风的娇羞，', '道一声珍重，道一声珍重，', '那一声珍重里有蜜甜的忧愁', '沙扬娜拉'], info: { auth: '——徐志摩', chapter: '《沙扬娜拉》' } }
+      ],
     }
+  },
+
+  mounted () {
+    let btn = this.$refs.btn
+    this.$refs.btn.click()
+    this.print();
+  },
+  methods: {
+    routeToCustomize () {
+      this.$router.push({ name: 'Select' });
+    },
+    routeToShare () {
+      this.imgIndex === 3 ? this.imgIndex = 0 : this.imgIndex++;
+      this.imgSrc = this.imgsSrc[this.imgIndex];
+    },
+    print () {
+      var images = document.querySelectorAll(".apng-image");
+      console.log('images', images);
+      for (var i = 0; i < images.length; i++) APNG.animateImage(images[i]);
+
+      let canvansTest = document.getElementById('apng-canvas');
+      APNG.animateContext(require('../assets/3.png'), canvansTest.getContext("2d")).then(a => {
+        console.log("fullfilled:", a);
+      }).catch(e => {
+        console.error("error:", e);
+      });
+    },
+    clear () {
+
+    }
+  }
 }
 </script>
 
@@ -194,7 +193,7 @@ video {
   padding: 0px;
   background-color: transparent;
   top: 10%;
-  right: 50px;
+  right: 10%;
   font-family: "Microsoft YaHei";
 }
 .poem {

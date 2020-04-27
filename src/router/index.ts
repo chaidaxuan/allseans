@@ -5,7 +5,9 @@ import Apng from '@/components/Apng.vue'
 import Video from '@/components/Video.vue'
 import Select from '@/components/Select.vue'
 import Share from '@/components/Share.vue'
+import Entry from '@/components/Entry.vue'
 import apngTest from '@/components/apngTest.vue'
+import CitySelect from '@/components/CitySelect.vue'
 
 Vue.use(Router);
 (Router.prototype as any).goBack = function () {
@@ -23,7 +25,7 @@ export default new Router({
     name: 'Video',
     component: Video
   }, {
-    path: '/apng',
+    path: '/apng/:cid',
     name: 'Apng',
     component: Apng
   }, {
@@ -38,5 +40,18 @@ export default new Router({
     path: '/share',
     name: 'Share',
     component: Share
-  }]
+  }, {
+    path: '/share',
+    name: 'Share',
+    component: Share
+  }, {
+    path: '/citySelect',
+    name: 'CitySelect',
+    component: CitySelect
+  }, {
+    path: '/entry/',
+    name: 'Entry',
+    component: Entry
+  }
+  ]
 })
