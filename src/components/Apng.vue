@@ -23,7 +23,15 @@
         :height="canvasHight"
         style="width:100%;height:100%;display:none;"
       >
+      </canvas>
 
+      <canvas
+        ref="codeCanvas"
+        class="canvas-apng"
+        width=70
+        height=70
+        style="display:none;"
+      >
       </canvas>
       <!-- 动画播放按钮 -->
       <button
@@ -54,14 +62,14 @@
         v-if="isOldCustomer"
         class="share-btn"
         @click="saveImg()"
-        src='../assets/share.png'
+        src='../assets/share-btn.png'
       >
       <button
         v-if="!isOldCustomer"
         class="select-city"
         @click="selectCity()"
-      > 进入理想城市 </button>
-      <!-- <img
+      > 进入理想省份 </button>
+      <!-- <img 
         class="customize-btn"
         src='../assets/customize-btn.png'
         @click="routeToCustomize()"
@@ -85,7 +93,8 @@
 <script>
 import Select from '@/components/Select'
 import Share from '@/components/Share'
-import QRCode from 'qrcodejs2'
+// import QRCode from 'qrcodejs2'
+var QRCode = require('qrcode');
 export default {
   name: 'Apng',
   components: {
@@ -98,6 +107,8 @@ export default {
       $refs: {
         theCanvas: HTMLCanvasElement,
         theImg: HTMLImageElement,
+        codeCanvas: HTMLCanvasElement,
+        btn: HTMLButtonElement,
       },
       msg: 'Welcome to Your Vue.js App',
       show: false,
@@ -163,14 +174,6 @@ export default {
     //          "onMenuShareAppMessage"//分享给朋友接口
     //      　] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
     // 　　});
-
-    // wx 自动播放声音
-    if (window.wx) {
-      window.wx.ready(function () {
-        let audio = document.getElementById("audioPlay");
-        audio.play();
-      });
-    }
 
     //画要下载的图片
     if (this.isOldCustomer) {
@@ -246,8 +249,7 @@ export default {
       let ctx = this.$refs.theCanvas.getContext("2d");
       ctx.font = "16px bold 黑体";
       ctx.fillStyle = "#FFFFFF";
-      // ctx!!.fillText("你是四月早天里的云烟,", 100, 150);
-      // ctx!!.fillText("你是四月早天里的云烟,", 200, 200);
+
       // 诗词竖排控制
       this.poems[this.selectedPoemIndex].poem.forEach((text, index) => {
         let name = text; // 文本内容
@@ -279,27 +281,33 @@ export default {
 
     // 画二维码部分
     printQCode () {
-      // 生成二维码
-      // let url = window.location.href;
-      // console.log('window.location.href', url);
-      // let qrcode = new QRCode("test", {
-      //   text: url,
-      //   width: 70,
-      //   height: 70,
-      //   colorDark: "#000000",
-      //   colorLight: "#ffffff",
-      //   correctLevel: QRCode.CorrectLevel.H
-      // });
-
 
       let that = this;
-      let ctx = this.$refs.theCanvas.getContext("2d");
-      let imgQRCode = new Image();
-      imgQRCode.src = require("../assets/QRCode.png");
-      imgQRCode.onload = function () {
-        ctx.drawImage(imgQRCode, 30, 30);
-        that.$refs.theImg.src = that.$refs.theCanvas.toDataURL();
+      let url = window.location.href;
+      // 设置生成的二维码的属性
+      let opts = {
+        errorCorrectionLevel: 'H',
+        type: 'image/jpeg',
+        quality: 0.3,
+        margin: 0,
       };
+      QRCode.toDataURL(url, opts).then(base64 => {
+        // 生成二维码
+        let ctx = this.$refs.theCanvas.getContext("2d");
+        let imgQRCode = new Image();
+        debugger
+        imgQRCode.src = base64;
+        imgQRCode.onload = function () {
+
+          //使用canvas控制生成二维码的大小
+          ctx.drawImage(imgQRCode, 0, 0, imgQRCode.width, imgQRCode.height, 30, 30, 70, 70);
+          that.$refs.theImg.src = that.$refs.theCanvas.toDataURL();
+          debugger
+        };
+
+      }).catch(e => {
+        console.error('e', e);
+      })
     }
   }
 }

@@ -1,17 +1,28 @@
 <template>
   <div class="province-wrap">
+    <canvas
+      ref="theBackgroundCanvas"
+      :width="imgWidth"
+      :height="imgheight"
+      style="width: 100%;height: 100%;object-fit:cover;"
+    >
+    </canvas>
     <div style="width: 100%;position: absolute;top: 20%;">
       <div class="select-wrap">
-        <select class="form-control">
+        <select
+          class="form-control"
+          @change="ModifyProvince()"
+          v-model="selectvideoIndex"
+        >
           <option
             v-for=" item in Region"
-            :value="item"
-            :key="item"
-          > {{item}}</option>
+            :value="item.videoIndex"
+            :key="item.videoIndex"
+          > {{item.province}}</option>
         </select>
       </div>
       <div style="text-align: center;">
-        请选择你的理想城市
+        请选择你的理想省份
       </div>
     </div>
   </div>
@@ -26,13 +37,13 @@ import Router from "vue-router";
 export default class CitySelect extends Vue {
   $router!: Router;
   $refs!: {
-    theCanvas: HTMLCanvasElement;
+    theBackgroundCanvas: HTMLCanvasElement;
   };
 
   msg = "Welcome to Your Vue.js App";
   show = false;
-  selectedImg = -1;
-  selectedAudio = -1;
+  selectedImg = 0;
+  selectedAudio = 0;
   selectedPoem = 0;
   imgsSrc = [
     { path: require("../assets/3.png"), width: 528, height: 960 },
@@ -40,20 +51,45 @@ export default class CitySelect extends Vue {
   ];
   imgWidth = 320;
   imgheight = 640;
+  selectvideoIndex = -1;
   Region = [
-    "-请选择-",
-    "安徽",
-    "北京",
-    "重庆",
-    "福建",
-    "甘肃",
-    "广东",
-    "广西",
-    "贵州",
-    "海南"
+    { province: "-请选择-", videoIndex: -1 },
+    { province: "北京", videoIndex: 0 },
+    { province: "上海", videoIndex: 1 }
   ];
   created() {}
   mounted() {}
+  animations: { [key: string]: Promise<IAnimation> } = {};
+  getAnimation(url: string): Promise<IAnimation> {
+    if (!this.animations[url]) {
+      this.animations[url] = APNG.parseURL(url);
+    }
+    return this.animations[url];
+  }
+
+  currentAnimation: IAnimation | null = null;
+  downloading = false;
+  async ModifyProvince() {
+    if (this.selectvideoIndex > -1) {
+      this.selectedImg = this.selectvideoIndex;
+      // let canvansTest = document.getElementById("apng-canvas");
+      this.imgWidth = this.imgsSrc[this.selectedImg].width;
+      this.imgheight = this.imgsSrc[this.selectedImg].height;
+      let ctx = this.$refs.theBackgroundCanvas.getContext("2d");
+
+      if (this.currentAnimation) {
+        this.currentAnimation.removeContext(ctx!);
+      }
+
+      const animation = await this.getAnimation(
+        this.imgsSrc[this.selectedImg].path
+      );
+      animation.play();
+      animation.addContext(ctx!);
+      this.currentAnimation = animation;
+      this.downloading = false;
+    }
+  }
 }
 </script>
 

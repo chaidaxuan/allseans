@@ -1,81 +1,66 @@
 <template>
-  <div class="apng-wrap">
-    <audio
-      id="audioPlay"
-      class='audio'
-      :src="audios[selectedAudio].path"
-      autoplay
-    ></audio>
-    <canvas
-      ref="theCanvas"
-      class="canvas-apng"
-      :width="imgWidth"
-      :height="imgheight"
-    >
-    </canvas>
+    <div class="apng-wrap">
+        <audio
+            id="audioPlay"
+            class='audio'
+            :src="audios[selectedAudio].path"
+            autoplay
+        ></audio>
+        <canvas
+            ref="theCanvas"
+            class="canvas-apng"
+            :width="imgWidth"
+            :height="imgheight"
+        >
+        </canvas>
+        <!-- 诗歌显示 -->
+        <transition name="slide-fade">
+            <div
+                v-if="show"
+                class="poem-wrap"
+            >
+                <div class="poem">
+                    <div
+                        v-for="(item,i) in poems[selectedPoem].poem"
+                        :key='i'
+                    >{{item}}<br></div>
+                    <div class="poem-info">{{poems[selectedPoem].info.auth}}<br></div>
+                    <div class="poem-info">{{poems[selectedPoem].info.chapter}}<br></div>
+                </div>
+            </div>
+        </transition>
 
-    <!-- 动画播放按钮 -->
-    <button
-      @click="show = true"
-      ref="btn"
-      style="display:none"
-    >动画</button>
-    <!-- 诗句显示 -->
-    <!-- <transition name="slide-fade">
-      <div
-        v-if="show"
-        class="poem-wrap"
-      >
-        <div class="poem">
-          <div
-            v-for="(item,i) in  poems[selectedPoem].poem"
-            :key='i'
-          >{{item}}<br></div>
-          <div class="poem-info">{{poems[selectedPoem].info.auth}}<br></div>
-          <div class="poem-info">{{poems[selectedPoem].info.chapter}}<br></div>
-        </div>
-      </div>
-    </transition> -->
-    <transition name="slide-fade">
-      <div
-        v-if="show"
-        class="poem-wrap"
-      >
-        <div class="poem">
-          <div
-            v-for="(item,i) in poems[selectedPoem].poem"
-            :key='i'
-          >{{item}}<br></div>
-          <div class="poem-info">{{poems[selectedPoem].info.auth}}<br></div>
-          <div class="poem-info">{{poems[selectedPoem].info.chapter}}<br></div>
-        </div>
-      </div>
-    </transition>
-    <!-- 立即分享按钮 -->
-    <!-- 定制专属诗签按钮 -->
-    <button
-      class="select-poem"
-      @click="randomPoem()"
-    > 随机诗歌 </button>
-    <button
-      class="select-video"
-      @click="randomVideo()"
-    > 随机视频 </button>
-    <button
-      class="select-music"
-      ref="theBtnMusic"
-      @click="randomMusic()"
-    > 随机音乐 </button>
-    <button
-      class="share-btn"
-      @click="share()"
-    > 发布 </button>
-    <img
-      class="title-img"
-      src='../assets/title.png'
-    >
+        <!-- 动画播放按钮 -->
+        <button
+            @click="show = true"
+            ref="btn"
+            style="display:none"
+        >动画</button>
+        <img
+            class="select-poem"
+            src='../assets/share-btn.png'
+            @click="oneClickShare()"
+        >
 
-  </div>
+        <img
+            class="select-video"
+            src='../assets/customize-btn.png'
+            @click="customize()"
+        >
+        <img
+            class="title-img"
+            src='../assets/title.png'
+        >
+
+        <!-- <button
+            class="select-poem"
+            @click="oneClickShare()"
+        > 一键分享</button>
+        <button
+            class="select-video"
+            @click="customize()"
+        > 定制 </button> -->
+    </div>
 </template>
 
 <script lang="ts">
@@ -83,7 +68,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import Router from "vue-router";
 
 @Component({ components: {} })
-export default class Select extends Vue {
+export default class Welcome extends Vue {
   $router!: Router;
   $refs!: {
     theCanvas: HTMLCanvasElement;
@@ -137,16 +122,18 @@ export default class Select extends Vue {
 
   created() {}
   mounted() {
-    if (window.wx) {
-      window.wx.ready(function() {
+    document.addEventListener(
+      "WeixinJSBridgeReady",
+      function() {
         let audio = <HTMLVideoElement>document.getElementById("audioPlay");
         audio.play();
-      });
-    }
+        console.log("WeixinJSBridgeReady");
+        // document.getElementById('video').play();
+      },
+      false
+    );
 
     this.randomVideo();
-
-    this.$refs.theBtnMusic.click();
     //播放诗歌动画
     let btn = this.$refs.btn;
     this.$refs.btn.click();
@@ -162,28 +149,6 @@ export default class Select extends Vue {
     this.selectedAudio = Math.floor(Math.random() * (1 + 1));
     let data = { selectedImg: this.selectedImg };
   }
-  toShare() {
-    let imgMax = this.imgsSrc.length - 1;
-    this.selectedImg = Math.floor(Math.random() * (1 + 1));
-    this.selectedAudio = Math.floor(Math.random() * (3 + 1));
-
-    //要传递的已选择的内容
-    let data = {
-      selectedImg: this.selectedImg.toString(),
-      selectedAudio: this.selectedAudio.toString(),
-      selectedPoem: this.selectedPoem.toString()
-    };
-    this.$router.push({ name: "Share", params: data });
-  }
-
-  animations: { [key: string]: Promise<IAnimation> } = {};
-  getAnimation(url: string): Promise<IAnimation> {
-    if (!this.animations[url]) {
-      this.animations[url] = APNG.parseURL(url);
-    }
-    return this.animations[url];
-  }
-
   currentAnimation: IAnimation | null = null;
   downloading = false;
   async randomVideo() {
@@ -211,6 +176,14 @@ export default class Select extends Vue {
     this.downloading = false;
   }
 
+  animations: { [key: string]: Promise<IAnimation> } = {};
+  getAnimation(url: string): Promise<IAnimation> {
+    if (!this.animations[url]) {
+      this.animations[url] = APNG.parseURL(url);
+    }
+    return this.animations[url];
+  }
+
   share() {
     let params = {
       isOldCustomer: "true"
@@ -230,19 +203,34 @@ export default class Select extends Vue {
       }
     });
   }
-
-  randomPoem() {
-    this.show = !this.show;
-    // this.show = !this.show;
-    this.selectedPoem === 0 ? (this.selectedPoem = 1) : (this.selectedPoem = 0);
-    setTimeout(() => {
-      this.show = !this.show;
-    }, 100);
+  customize() {
+    this.$router.push({
+      name: "Select"
+    });
   }
-  randomMusic() {
-    this.selectedAudio === 0
-      ? (this.selectedAudio = 1)
-      : (this.selectedAudio = 0);
+  oneClickShare() {
+    let params = {
+      isOldCustomer: "true"
+    };
+
+    this.selectedImg = Math.floor(Math.random() * (1 + 1));
+    this.selectedAudio = Math.floor(Math.random() * (1 + 1));
+    this.selectedPoem = Math.floor(Math.random() * (1 + 1));
+
+    // 三个参数分别为(图片,音频,诗歌);
+    const hash =
+      this.selectedImg.toString() +
+      "-" +
+      this.selectedAudio.toString() +
+      "-" +
+      this.selectedPoem.toString();
+    this.$router.push({
+      name: "Apng",
+      params: {
+        cid: hash,
+        isOldCustomer: "true"
+      }
+    });
   }
 }
 </script>
@@ -298,7 +286,6 @@ a {
   left: 0;
   right: 0;
   /* top: 0; */
-  border: 1px solid black;
   bottom: 20%;
   width: 10rem;
   height: 3rem;
@@ -330,7 +317,6 @@ a {
   left: 0;
   right: 0;
   /* top: 0; */
-  border: 1px solid black;
   bottom: 30%;
   width: 10rem;
   height: 3rem;

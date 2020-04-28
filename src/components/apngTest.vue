@@ -42,7 +42,7 @@
 
       <img
         class="share-btn"
-        src='../assets/share.png'
+        src='../assets/share-btn.png'
       >
       <img
         class="customize-btn"
