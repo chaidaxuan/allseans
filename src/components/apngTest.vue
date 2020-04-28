@@ -93,7 +93,7 @@ export default {
   },
   methods: {
     routeToCustomize () {
-      this.$router.push({ name: 'Select' });
+      this.$router.replace({ name: 'Select' });
     },
     routeToShare () {
       this.imgIndex === 3 ? this.imgIndex = 0 : this.imgIndex++;

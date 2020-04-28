@@ -173,7 +173,7 @@ export default class Select extends Vue {
       selectedAudio: this.selectedAudio.toString(),
       selectedPoem: this.selectedPoem.toString()
     };
-    this.$router.push({ name: "Share", params: data });
+    this.$router.replace({ name: "Share", params: data });
   }
 
   animations: { [key: string]: Promise<IAnimation> } = {};
@@ -222,7 +222,7 @@ export default class Select extends Vue {
       this.selectedAudio.toString() +
       "-" +
       this.selectedPoem.toString();
-    this.$router.push({
+    this.$router.replace({
       name: "Apng",
       params: {
         cid: hash,

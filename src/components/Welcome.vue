@@ -1,58 +1,58 @@
 <template>
-    <div class="apng-wrap">
-        <audio
-            id="audioPlay"
-            class='audio'
-            :src="audios[selectedAudio].path"
-            autoplay
-        ></audio>
-        <canvas
-            ref="theCanvas"
-            class="canvas-apng"
-            :width="imgWidth"
-            :height="imgheight"
-        >
-        </canvas>
-        <!-- 诗歌显示 -->
-        <transition name="slide-fade">
-            <div
-                v-if="show"
-                class="poem-wrap"
-            >
-                <div class="poem">
-                    <div
-                        v-for="(item,i) in poems[selectedPoem].poem"
-                        :key='i'
-                    >{{item}}<br></div>
-                    <div class="poem-info">{{poems[selectedPoem].info.auth}}<br></div>
-                    <div class="poem-info">{{poems[selectedPoem].info.chapter}}<br></div>
-                </div>
-            </div>
-        </transition>
+  <div class="apng-wrap">
+    <audio
+      id="audioPlay"
+      class='audio'
+      :src="audios[selectedAudio].path"
+      autoplay
+    ></audio>
+    <canvas
+      ref="theCanvas"
+      class="canvas-apng"
+      :width="imgWidth"
+      :height="imgheight"
+    >
+    </canvas>
+    <!-- 诗歌显示 -->
+    <transition name="slide-fade">
+      <div
+        v-if="show"
+        class="poem-wrap"
+      >
+        <div class="poem">
+          <div
+            v-for="(item,i) in poems[selectedPoem].poem"
+            :key='i'
+          >{{item}}<br></div>
+          <div class="poem-info">{{poems[selectedPoem].info.auth}}<br></div>
+          <div class="poem-info">{{poems[selectedPoem].info.chapter}}<br></div>
+        </div>
+      </div>
+    </transition>
 
-        <!-- 动画播放按钮 -->
-        <button
-            @click="show = true"
-            ref="btn"
-            style="display:none"
-        >动画</button>
-        <img
-            class="select-poem"
-            src='../assets/share-btn.png'
-            @click="oneClickShare()"
-        >
+    <!-- 动画播放按钮 -->
+    <button
+      @click="show = true"
+      ref="btn"
+      style="display:none"
+    >动画</button>
+    <img
+      class="select-poem"
+      src='../assets/share-btn.png'
+      @click="oneClickShare()"
+    >
 
-        <img
-            class="select-video"
-            src='../assets/customize-btn.png'
-            @click="customize()"
-        >
-        <img
-            class="title-img"
-            src='../assets/title.png'
-        >
+    <img
+      class="select-video"
+      src='../assets/customize-btn.png'
+      @click="customize()"
+    >
+    <img
+      class="title-img"
+      src='../assets/title.png'
+    >
 
-        <!-- <button
+    <!-- <button
             class="select-poem"
             @click="oneClickShare()"
         > 一键分享</button>
@@ -60,7 +60,7 @@
             class="select-video"
             @click="customize()"
         > 定制 </button> -->
-    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -79,7 +79,7 @@ export default class Welcome extends Vue {
 
   msg = "Welcome to Your Vue.js App";
   show = false;
-  selectedImg = 0;
+  selectedImg = 1;
   selectedAudio = 0;
   selectedPoem = 0;
   imgsSrc = [
@@ -142,7 +142,6 @@ export default class Welcome extends Vue {
     this.imgWidth = this.imgsSrc[0].width;
     this.imgheight = this.imgsSrc[0].height;
   }
-  switchMusic() {}
   randomSelect() {
     let imgMax = this.imgsSrc.length;
     this.selectedImg = Math.floor(Math.random() * (imgMax + 1));
@@ -184,27 +183,8 @@ export default class Welcome extends Vue {
     return this.animations[url];
   }
 
-  share() {
-    let params = {
-      isOldCustomer: "true"
-    };
-    // 三个参数分别为(图片,音频,诗歌);
-    const hash =
-      this.selectedImg.toString() +
-      "-" +
-      this.selectedAudio.toString() +
-      "-" +
-      this.selectedPoem.toString();
-    this.$router.push({
-      name: "Apng",
-      params: {
-        cid: hash,
-        isOldCustomer: "true"
-      }
-    });
-  }
   customize() {
-    this.$router.push({
+    this.$router.replace({
       name: "Select"
     });
   }
@@ -213,9 +193,9 @@ export default class Welcome extends Vue {
       isOldCustomer: "true"
     };
 
-    this.selectedImg = Math.floor(Math.random() * (1 + 1));
-    this.selectedAudio = Math.floor(Math.random() * (1 + 1));
-    this.selectedPoem = Math.floor(Math.random() * (1 + 1));
+    // this.selectedImg = Math.floor(Math.random() * (1 + 1));
+    // this.selectedAudio = Math.floor(Math.random() * (1 + 1));
+    // this.selectedPoem = Math.floor(Math.random() * (1 + 1));
 
     // 三个参数分别为(图片,音频,诗歌);
     const hash =
@@ -224,7 +204,7 @@ export default class Welcome extends Vue {
       this.selectedAudio.toString() +
       "-" +
       this.selectedPoem.toString();
-    this.$router.push({
+    this.$router.replace({
       name: "Apng",
       params: {
         cid: hash,

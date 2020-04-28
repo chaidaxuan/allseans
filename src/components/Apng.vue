@@ -185,7 +185,7 @@ export default {
   },
   methods: {
     routeToCustomize () {
-      this.$router.push({ name: 'Select' });
+      this.$router.replace({ name: 'Select' });
     },
     routeToShare () {
       this.imgIndex === 3 ? this.imgIndex = 0 : this.imgIndex++;
@@ -212,7 +212,7 @@ export default {
 
     },
     selectCity () {
-      this.$router.push({ name: "CitySelect" });
+      this.$router.replace({ name: "CitySelect" });
     },
     getBase64Image (img) {
       var canvas = document.createElement("canvas");
@@ -283,7 +283,7 @@ export default {
     printQCode () {
 
       let that = this;
-      let url = window.location.href;
+      let url = window.location.href + '-sh' + '-1588066930730';
       // 设置生成的二维码的属性
       let opts = {
         errorCorrectionLevel: 'H',
