@@ -21,15 +21,35 @@
           > {{item.province}}</option>
         </select>
       </div>
-      <div style="text-align: center;">
-        请选择你的理想省份
-      </div>
     </div>
 
-    <button
+    <img
+      v-if="showSelectImg"
+      class="citySelect-btn"
+      src='../assets/btn-img/black_lvcheng.png'
+      @click="showSelectOption(),ModifyProvince()"
+    >
+    <div
+      v-if="!showSelectImg"
+      class="citySelect-btn"
+    >
+      <select
+        class="form-control"
+        @change="ModifyProvince()"
+        v-model="selectedImgIndex"
+      >
+        <option
+          v-for=" item in Region"
+          :value="item.videoIndex"
+          :key="item.videoIndex"
+        > {{item.province}}</option>
+      </select>
+    </div>
+    <img
       class="toselect-btn"
+      src='../assets/btn-img/black_chufa.png'
       @click="toSelect()"
-    > 进入选择页 </button>
+    >
   </div>
 </template>
 
@@ -47,6 +67,7 @@ export default class CitySelect extends Vue {
 
   msg = "Welcome to Your Vue.js App";
   show = false;
+  showSelectImg = true;
   selectedImg = 0;
   imgsSrc = [
     { path: require("../assets/3.png"), width: 528, height: 960 },
@@ -112,9 +133,13 @@ export default class CitySelect extends Vue {
     this.$router.replace({
       name: "Select",
       params: {
-        cid: hash
+        cid: hash,
+        isOldCustomer: "false"
       }
     });
+  }
+  showSelectOption() {
+    this.showSelectImg = false;
   }
 }
 </script>
@@ -179,8 +204,8 @@ video {
   padding: 6px 12px;
   font-size: 14px;
   line-height: 1.42857143;
-  color: #555;
-  background-color: #fff;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.3);
   background-image: none;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -236,6 +261,7 @@ fieldset[disabled] .form-control {
 }
 .select-wrap {
   padding: 1em;
+  display: none;
 }
 .toselect-btn {
   position: absolute;
@@ -243,10 +269,24 @@ fieldset[disabled] .form-control {
   left: 0;
   right: 0;
   /* top: 0; */
-  border: 1px solid black;
-  bottom: 30%;
-  width: 20rem;
-  height: 3rem;
+  bottom: 13%;
+  width: 11rem;
+  height: 4rem;
+  background-color: transparent;
+  color: white;
+  -o-object-fit: contain;
+  object-fit: contain;
+  font-size: 1.5em;
+}
+.citySelect-btn {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  /* top: 0; */
+  bottom: 18%;
+  width: 11rem;
+  height: 4rem;
   background-color: transparent;
   color: white;
   -o-object-fit: contain;

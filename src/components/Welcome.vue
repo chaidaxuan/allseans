@@ -38,28 +38,19 @@
     >动画</button>
     <img
       class="select-poem"
-      src='../assets/share-btn.png'
+      src='../assets/btn-img/black_share_jike.png'
       @click="oneClickShare()"
     >
 
     <img
       class="select-video"
-      src='../assets/customize-btn.png'
+      src='../assets/btn-img/black_xieshi.png'
       @click="customize()"
     >
     <img
       class="title-img"
       src='../assets/title.png'
     >
-
-    <!-- <button
-            class="select-poem"
-            @click="oneClickShare()"
-        > 一键分享</button>
-        <button
-            class="select-video"
-            @click="customize()"
-        > 定制 </button> -->
   </div>
 </template>
 
@@ -287,8 +278,8 @@ a {
   left: 0;
   right: 0;
   /* top: 0; */
-  bottom: 20%;
-  width: 10rem;
+  bottom: 13%;
+  width: 8rem;
   height: 3rem;
   background-color: transparent;
   color: white;
@@ -304,7 +295,7 @@ a {
   /* top: 0; */
   border: 1px solid black;
   bottom: 10%;
-  width: 10rem;
+  width: 8rem;
   height: 3rem;
   background-color: transparent;
   color: white;
@@ -318,8 +309,8 @@ a {
   left: 0;
   right: 0;
   /* top: 0; */
-  bottom: 30%;
-  width: 10rem;
+  bottom: 20%;
+  width: 8rem;
   height: 3rem;
   background-color: transparent;
   color: white;
@@ -363,12 +354,12 @@ a {
   font-size: 30px;
   padding: 0px;
   background-color: transparent;
-  top: 10%;
-  right: 10%;
+  top: 26%;
+  right: 2%;
   font-family: "Microsoft YaHei";
 }
 .poem {
-  font-size: 1.1rem;
+  font-size: 0.8rem;
   text-align: left;
   /* margin: 0 auto; */
   height: 40vh;

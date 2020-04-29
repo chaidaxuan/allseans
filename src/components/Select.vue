@@ -54,23 +54,27 @@
     </transition>
     <!-- 立即分享按钮 -->
     <!-- 定制专属诗签按钮 -->
-    <button
+    <img
       class="select-poem"
+      src='../assets/btn-img/black_xuanshi.png'
       @click="randomPoem()"
-    > 随机诗歌 </button>
-    <button
+    >
+    <img
       class="select-video"
+      src='../assets/btn-img/black_hua.png'
       @click="randomVideo()"
-    > 随机视频 </button>
-    <button
+    >
+    <img
       class="select-music"
       ref="theBtnMusic"
+      src='../assets/btn-img/black_peiyue.png'
       @click="randomMusic()"
-    > 随机音乐 </button>
-    <button
+    >
+    <img
       class="share-btn"
+      src='../assets/btn-img/black_queren.png'
       @click="share()"
-    > 发布 </button>
+    >
     <img
       class="title-img"
       src='../assets/title.png'
@@ -224,6 +228,7 @@ export default class Select extends Vue {
     let params = {
       isOldCustomer: "true"
     };
+
     // 三个参数分别为(图片,音频,诗歌);
     const hash =
       this.selectedImg.toString() +
@@ -231,6 +236,7 @@ export default class Select extends Vue {
       this.selectedAudio.toString() +
       "-" +
       this.selectedPoem.toString();
+    debugger;
     this.$router.replace({
       name: "Apng",
       params: {
@@ -304,13 +310,12 @@ a {
 .select-video {
   position: absolute;
   margin: auto;
-  left: 0;
-  right: 0;
+  /* left: 0; */
+  right: 21%;
   /* top: 0; */
-  border: 1px solid black;
   bottom: 20%;
-  width: 10rem;
-  height: 3rem;
+  width: 6rem;
+  height: 4rem;
   background-color: transparent;
   color: white;
   -o-object-fit: contain;
@@ -320,13 +325,12 @@ a {
 .select-music {
   position: absolute;
   margin: auto;
-  left: 0;
-  right: 0;
+  left: 21%;
+  /* right: 0; */
   /* top: 0; */
-  border: 1px solid black;
   bottom: 10%;
-  width: 10rem;
-  height: 3rem;
+  width: 6rem;
+  height: 4rem;
   background-color: transparent;
   color: white;
   -o-object-fit: contain;
@@ -336,13 +340,12 @@ a {
 .select-poem {
   position: absolute;
   margin: auto;
-  left: 0;
-  right: 0;
+  left: 21%;
+  /* right: 0; */
   /* top: 0; */
-  border: 1px solid black;
-  bottom: 30%;
-  width: 10rem;
-  height: 3rem;
+  bottom: 20%;
+  width: 6rem;
+  height: 4rem;
   background-color: transparent;
   color: white;
   -o-object-fit: contain;
@@ -362,13 +365,13 @@ a {
 .share-btn {
   position: absolute;
   margin: auto;
-  left: 0;
-  right: 0;
+  /* left: 0; */
+  right: 21%;
   /* top: 0; */
-  border: 1px solid black;
-  bottom: 1px;
+  bottom: 10%;
   width: 10rem;
-  height: 3rem;
+  width: 6rem;
+  height: 4rem;
   background-color: transparent;
   color: white;
   -o-object-fit: contain;
@@ -385,12 +388,12 @@ a {
   font-size: 30px;
   padding: 0px;
   background-color: transparent;
-  top: 10%;
-  right: 10%;
+  top: 26%;
+  right: 2%;
   font-family: "Microsoft YaHei";
 }
 .poem {
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   text-align: left;
   /* margin: 0 auto; */
   height: 40vh;

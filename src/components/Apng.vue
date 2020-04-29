@@ -9,7 +9,7 @@
       ></audio>
 
       <canvas
-        id="apng-canvas"
+        ref="bgCanvas"
         :width="imgWidth"
         :height="imgheight"
         style="width: 100%;height: 100%;object-fit:cover;"
@@ -66,7 +66,7 @@
         v-if="isOldCustomer"
         class="share-btn"
         @click="saveImg()"
-        src='../assets/share-btn.png'
+        src='../assets/btn-img/black_share_changan.png'
       >
       <!-- <button
         v-if="!isOldCustomer"
@@ -78,7 +78,7 @@
         v-if="!isOldCustomer"
         class="select-city"
         @click="selectCity()"
-        src='../assets/customize-btn.png'
+        src='../assets/btn-img/black_xieshi.png'
       >
 
       <!-- 全季logo -->
@@ -110,12 +110,12 @@ export default {
 
   data () {
     return {
-      $refs: {
-        theCanvas: HTMLCanvasElement,
-        theImg: HTMLImageElement,
-        codeCanvas: HTMLCanvasElement,
-        btn: HTMLButtonElement,
-      },
+      // $refs: {
+      //   theCanvas: HTMLCanvasElement,
+      //   theImg: HTMLImageElement,
+      //   codeCanvas: HTMLCanvasElement,
+      //   btn: HTMLButtonElement,
+      // },
       msg: 'Welcome to Your Vue.js App',
       show: false,
       canSave: true,
@@ -159,8 +159,7 @@ export default {
 
   mounted () {
     // 判断是否是老客
-    this.isOldCustomer = this.$route.params.isOldCustomer == 'true';
-    console.log('是否是老客', this.isOldCustomer);
+    this.isOldCustomer = this.$route.params.isOldCustomer === 'true';
 
     let that = this;
     this.selectedImgIndex = this.$route.params.cid.split('-')[0];
@@ -179,18 +178,6 @@ export default {
 
     //播放视频  
     this.print();
-
-    //  wx.config({
-    //    　　debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来
-    //    　　appId: data.configMap.appId, // 必填，公众号的唯一标识
-    //   　　 timestamp: data.configMap.timestamp, // 必填，生成签名的时间戳
-    //    　　nonceStr: data.configMap.nonceStr, // 必填，生成签名的随机串
-    //   　　 signature: data.configMap.signature,// 必填，签名，见附录1
-    //      　jsApiList: [
-    //          "onMenuShareTimeline",//分享朋友圈接口
-    //          "onMenuShareAppMessage"//分享给朋友接口
-    //      　] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-    // 　　});
 
     //画要下载的图片
     if (this.isOldCustomer) {
@@ -212,21 +199,15 @@ export default {
       this.imgWidth = this.imgsSrc[this.selectedImgIndex].width;
       this.imgheight = this.imgsSrc[this.selectedImgIndex].height;
 
-      var images = document.querySelectorAll(".apng-image");
-      console.log('images', images);
-      for (var i = 0; i < images.length; i++) APNG.animateImage(images[i]);
-
-      let canvansTest = document.getElementById('apng-canvas');
+      let canvansTest = this.$refs.bgCanvas;
       APNG.animateContext(this.imgsSrc[this.selectedImgIndex].path, canvansTest.getContext("2d")).then(a => {
-        console.log("fullfilled:", a);
+        console.log("fullfilled:", a, this.imgsSrc[this.selectedImgIndex].path);
+        debugger
       }).catch(e => {
         console.error("error:", e);
       });
     },
 
-    saveImg () {
-
-    },
     selectCity () {
       const hash =
         this.selectedImgIndex.toString() +
@@ -253,31 +234,26 @@ export default {
       return dataURL;
     },
     printSaveImg () {
-      debugger
       let that = this;
       let ctx = this.$refs.theCanvas.getContext("2d");
-      debugger
       let img = this.$refs.theImg;
       let imgBase = new Image();
       imgBase.src = this.baseMap[this.selectedImgIndex].path;
       this.canvasWidth = this.baseMap[this.selectedImgIndex].width;
       this.canvasHight = this.baseMap[this.selectedImgIndex].height;
 
-      debugger
       imgBase.onload = function () {
         ctx.drawImage(imgBase, 0, 0);
         that.printPoem();
         that.printQCode();
 
-        debugger
         that.$refs.theImg.src = that.$refs.theCanvas.toDataURL();
-        debugger
       };
     },
     printPoem () {
       let ctx = this.$refs.theCanvas.getContext("2d");
       ctx.font = "16px bold 黑体";
-      ctx.fillStyle = "#FFFFFF";
+      // ctx.fillStyle = "#FFFFFF";
 
       let poemContent = [...this.poems[this.selectedPoemIndex].poem];
       poemContent.push(`我在${this.PoemProvince}`);
@@ -438,12 +414,12 @@ video {
   font-size: 30px;
   padding: 0px;
   background-color: transparent;
-  top: 10%;
-  right: 10%;
+  top: 26%;
+  right: 2%;
   font-family: "Microsoft YaHei";
 }
 .poem {
-  font-size: 1rem;
+  font-size: 0.8rem;
   text-align: left;
   /* margin: 0 auto; */
   height: 40vh;
@@ -508,13 +484,13 @@ video {
   left: 0;
   right: 0;
   /* top: 0; */
-  bottom: 30%;
-  width: 10rem;
+  bottom: 13%;
+  width: 8rem;
   height: 3rem;
   background-color: transparent;
   color: white;
   -o-object-fit: contain;
   object-fit: contain;
-  font-size: 1em;
+  font-size: 1.5em;
 }
 </style>

@@ -192,12 +192,12 @@ video {
   font-size: 30px;
   padding: 0px;
   background-color: transparent;
-  top: 10%;
-  right: 10%;
+  top: 26%;
+  right: 2%;
   font-family: "Microsoft YaHei";
 }
 .poem {
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   text-align: left;
   /* margin: 0 auto; */
   height: 40vh;
