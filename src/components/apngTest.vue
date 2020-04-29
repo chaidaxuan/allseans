@@ -197,7 +197,7 @@ video {
   font-family: "Microsoft YaHei";
 }
 .poem {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   text-align: left;
   /* margin: 0 auto; */
   height: 40vh;
