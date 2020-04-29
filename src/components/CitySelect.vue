@@ -12,7 +12,7 @@
         <select
           class="form-control"
           @change="ModifyProvince()"
-          v-model="selectvideoIndex"
+          v-model="selectedImgIndex"
         >
           <option
             v-for=" item in Region"
@@ -23,6 +23,9 @@
       </div>
       <div style="text-align: center;">
         请选择你的理想省份
+      </div>
+      <div style="text-align: center;">
+        进入选择页
       </div>
     </div>
   </div>
@@ -43,22 +46,28 @@ export default class CitySelect extends Vue {
   msg = "Welcome to Your Vue.js App";
   show = false;
   selectedImg = 0;
-  selectedAudio = 0;
-  selectedPoem = 0;
   imgsSrc = [
     { path: require("../assets/3.png"), width: 528, height: 960 },
     { path: require("../assets/mountain.png"), width: 352, height: 640 }
   ];
   imgWidth = 320;
   imgheight = 640;
-  selectvideoIndex = -1;
+  selectedImgIndex = -1;
+  selectedAudioIndex = -1;
+  selectedPoemIndex = -1;
   Region = [
     { province: "-请选择-", videoIndex: -1 },
     { province: "北京", videoIndex: 0 },
     { province: "上海", videoIndex: 1 }
   ];
   created() {}
-  mounted() {}
+  mounted() {
+    this.selectedImgIndex = parseFloat(this.$route.params.cid.split("-")[0]);
+    this.selectedAudioIndex = parseFloat(this.$route.params.cid.split("-")[1]);
+    this.selectedPoemIndex = parseFloat(this.$route.params.cid.split("-")[2]);
+    this.ModifyProvince();
+    debugger;
+  }
   animations: { [key: string]: Promise<IAnimation> } = {};
   getAnimation(url: string): Promise<IAnimation> {
     if (!this.animations[url]) {
@@ -70,8 +79,8 @@ export default class CitySelect extends Vue {
   currentAnimation: IAnimation | null = null;
   downloading = false;
   async ModifyProvince() {
-    if (this.selectvideoIndex > -1) {
-      this.selectedImg = this.selectvideoIndex;
+    if (this.selectedImgIndex > -1) {
+      this.selectedImg = this.selectedImgIndex;
       // let canvansTest = document.getElementById("apng-canvas");
       this.imgWidth = this.imgsSrc[this.selectedImg].width;
       this.imgheight = this.imgsSrc[this.selectedImg].height;

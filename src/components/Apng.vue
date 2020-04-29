@@ -46,6 +46,10 @@
           class="poem-wrap"
         >
           <div class="poem">
+            <div v-if="oldCustomerSharedTimestamp">{{oldCustomerSharedTimestamp}}<br></div>
+            <div v-if="PoemProvince">我在{{PoemProvince}}<br></div>
+
+            <div><br></div>
             <div
               v-for="(item,i) in poems[selectedPoemIndex].poem"
               :key='i'
@@ -64,16 +68,18 @@
         @click="saveImg()"
         src='../assets/share-btn.png'
       >
-      <button
+      <!-- <button
         v-if="!isOldCustomer"
         class="select-city"
         @click="selectCity()"
-      > 进入理想省份 </button>
-      <!-- <img 
-        class="customize-btn"
+      > 进入理想省份 </button> -->
+
+      <img
+        v-if="!isOldCustomer"
+        class="select-city"
+        @click="selectCity()"
         src='../assets/customize-btn.png'
-        @click="routeToCustomize()"
-      > -->
+      >
 
       <!-- 全季logo -->
       <img
@@ -117,10 +123,13 @@ export default {
       selectedImgIndex: 0,
       selectedPoemIndex: 0,
       selectedAudioIndex: 0,
+      selectedProvince: 0,
+      oldCustomerSharedTimestamp: 0,
       imgsSrc: [
         { path: require("../assets/3.png"), width: 528, height: 960 },
         { path: require("../assets/mountain.png"), width: 352, height: 640 }
       ],
+      provinces: [{ provinceCode: '-shanghai', provinceName: '上海' }, { provinceCode: '-beijing', provinceName: '北京' }],
       imgWidth: 528,
       imgheight: 960,
       canvasWidth: 0,
@@ -140,27 +149,35 @@ export default {
         }
       ],
       baseMap: [
-        { path: require("../assets/普通底图.png"), width: 370, height: 670 },
-        { path: require("../assets/普通底图2.jpg"), width: 411, height: 731 },
+        { path: require("../assets/普通底图.png"), width: 377, height: 670 },
+        { path: require("../assets/普通底图2.png"), width: 377, height: 670 },
       ],
+      PoemProvince: '',
+      oldCustomerSharedTimestamp: ''
     }
   },
 
   mounted () {
+    // 判断是否是老客
+    this.isOldCustomer = this.$route.params.isOldCustomer == 'true';
+    console.log('是否是老客', this.isOldCustomer);
+
     let that = this;
     this.selectedImgIndex = this.$route.params.cid.split('-')[0];
     this.selectedAudioIndex = this.$route.params.cid.split('-')[1];
     this.selectedPoemIndex = this.$route.params.cid.split('-')[2];
-
-    // 判断是否是老客
-    this.isOldCustomer = this.$route.params.isOldCustomer == 'true';
-    console.log('是否是老客', this.isOldCustomer);
+    if (!this.isOldCustomer) {
+      this.selectedProvince = this.$route.params.cid.split('-')[3];
+      this.PoemProvince = this.provinces.filter(x => x.province === this.provinceCode)[0].provinceName;
+      this.oldCustomerSharedTimestamp = this.timestampToTime(parseFloat(this.$route.params.cid.split('-')[4]));
+    }
+    debugger
 
     //播放诗歌动画
     let btn = this.$refs.btn;
     this.$refs.btn.click();
 
-    //播放视频 
+    //播放视频  
     this.print();
 
     //  wx.config({
@@ -178,7 +195,6 @@ export default {
     //画要下载的图片
     if (this.isOldCustomer) {
       this.printSaveImg();
-      debugger
     } else {
       this.canSave = false;
     }
@@ -212,7 +228,19 @@ export default {
 
     },
     selectCity () {
-      this.$router.replace({ name: "CitySelect" });
+      const hash =
+        this.selectedImgIndex.toString() +
+        "-" +
+        this.selectedAudioIndex.toString() +
+        "-" +
+        this.selectedPoemIndex.toString();
+
+      this.$router.replace({
+        name: "CitySelect",
+        params: {
+          cid: hash,
+        }
+      });
     },
     getBase64Image (img) {
       var canvas = document.createElement("canvas");
@@ -240,6 +268,7 @@ export default {
         ctx.drawImage(imgBase, 0, 0);
         that.printPoem();
         that.printQCode();
+
         debugger
         that.$refs.theImg.src = that.$refs.theCanvas.toDataURL();
         debugger
@@ -250,8 +279,12 @@ export default {
       ctx.font = "16px bold 黑体";
       ctx.fillStyle = "#FFFFFF";
 
+      let poemContent = [...this.poems[this.selectedPoemIndex].poem];
+      poemContent.push(`我在${this.PoemProvince}`);
+      poemContent.push(`${this.timestampToTime(parseFloat(this.oldCustomerSharedTimestamp))}`);
       // 诗词竖排控制
-      this.poems[this.selectedPoemIndex].poem.forEach((text, index) => {
+      debugger
+      poemContent.forEach((text, index) => {
         let name = text; // 文本内容
         let x = 100 + index * 25,
           y = 100; // 文字开始的坐标
@@ -278,12 +311,10 @@ export default {
         }
       })
     },
-
     // 画二维码部分
     printQCode () {
-
       let that = this;
-      let url = window.location.href + '-sh' + '-1588066930730';
+      let url = window.location.href + '-shanghai' + '-1588066930730';
       // 设置生成的二维码的属性
       let opts = {
         errorCorrectionLevel: 'H',
@@ -295,19 +326,39 @@ export default {
         // 生成二维码
         let ctx = this.$refs.theCanvas.getContext("2d");
         let imgQRCode = new Image();
-        debugger
         imgQRCode.src = base64;
         imgQRCode.onload = function () {
 
           //使用canvas控制生成二维码的大小
           ctx.drawImage(imgQRCode, 0, 0, imgQRCode.width, imgQRCode.height, 30, 30, 70, 70);
           that.$refs.theImg.src = that.$refs.theCanvas.toDataURL();
-          debugger
         };
-
       }).catch(e => {
         console.error('e', e);
       })
+    },
+    printLogo () {
+      let imgLogo = new Image();
+      imgLogo.src = require('../assets/title.png');
+      // imgLogo.onload = func
+    },
+    timestampToTime (timestamp) {
+      if (timestamp) {
+        if (timestamp === 0) {
+          return ''
+        }
+        if (timestamp.length != 10) {
+          debugger
+          var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        } else {
+          var date = new Date(timestamp * 1000);
+        }
+        const Y = date.getFullYear() + '年';
+        const M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '月';
+        const D = date.getDate() + '日';
+        debugger
+        return Y + M + D;
+      }
     }
   }
 }
@@ -392,7 +443,7 @@ video {
   font-family: "Microsoft YaHei";
 }
 .poem {
-  font-size: 1.1rem;
+  font-size: 1rem;
   text-align: left;
   /* margin: 0 auto; */
   height: 40vh;
@@ -457,7 +508,6 @@ video {
   left: 0;
   right: 0;
   /* top: 0; */
-  border: 1px solid black;
   bottom: 30%;
   width: 10rem;
   height: 3rem;

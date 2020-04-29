@@ -41,7 +41,7 @@ export default new Router({
     name: 'Share',
     component: Share
   }, {
-    path: '/citySelect',
+    path: '/citySelect/:cid',
     name: 'CitySelect',
     component: CitySelect
   }, {

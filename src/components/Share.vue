@@ -38,7 +38,8 @@ export default class Share extends Vue {
     { path: require("../assets/mountain.png"), width: 352, height: 640 }
   ];
   baseMap = [
-    { path: require("../assets/普通底图.png"), width: 370, height: 670 }
+    { path: require("../assets/普通底图.png"), width: 377, height: 670 },
+    { path: require("../assets/普通底图2.png"), width: 377, height: 670 }
   ];
   poems = [
     {
