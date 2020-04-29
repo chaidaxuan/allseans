@@ -7,25 +7,10 @@
       style="width: 100%;height: 100%;object-fit:cover;"
     >
     </canvas>
-    <div style="width: 100%;position: absolute;top: 20%;">
-      <div class="select-wrap">
-        <select
-          class="form-control"
-          @change="ModifyProvince()"
-          v-model="selectedImgIndex"
-        >
-          <option
-            v-for=" item in Region"
-            :value="item.videoIndex"
-            :key="item.videoIndex"
-          > {{item.province}}</option>
-        </select>
-      </div>
-    </div>
 
     <img
       v-if="showSelectImg"
-      class="citySelect-btn"
+      class="citySelect-img"
       src='../assets/btn-img/black_lvcheng.png'
       @click="showSelectOption(),ModifyProvince()"
     >
@@ -39,6 +24,7 @@
         v-model="selectedImgIndex"
       >
         <option
+          style=""
           v-for=" item in Region"
           :value="item.videoIndex"
           :key="item.videoIndex"
@@ -121,6 +107,7 @@ export default class CitySelect extends Vue {
       this.currentAnimation = animation;
       this.downloading = false;
     }
+    window.scroll(0, 0);
   }
   toSelect() {
     const hash =
@@ -217,14 +204,14 @@ video {
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
 
-.form-control:focus {
+/* .form-control:focus {
   border-color: #66afe9;
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
     0 0 8px rgba(102, 175, 233, 0.6);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
     0 0 8px rgba(102, 175, 233, 0.6);
-}
+} */
 
 .form-control::-moz-placeholder {
   color: #999;
@@ -269,7 +256,22 @@ fieldset[disabled] .form-control {
   left: 0;
   right: 0;
   /* top: 0; */
-  bottom: 13%;
+  bottom: 10%;
+  width: 11rem;
+  height: 3rem;
+  background-color: transparent;
+  color: white;
+  -o-object-fit: contain;
+  object-fit: contain;
+  font-size: 1.5em;
+}
+.citySelect-img {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  /* top: 0; */
+  bottom: 16%;
   width: 11rem;
   height: 4rem;
   background-color: transparent;
@@ -284,7 +286,7 @@ fieldset[disabled] .form-control {
   left: 0;
   right: 0;
   /* top: 0; */
-  bottom: 18%;
+  bottom: 14%;
   width: 11rem;
   height: 4rem;
   background-color: transparent;

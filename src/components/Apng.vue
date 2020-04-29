@@ -451,13 +451,14 @@ video {
   left: 0;
   right: 0;
   /* top: 0; */
-  bottom: 20vh;
-  width: 10rem;
+  bottom: 13%;
+  width: 8rem;
   height: 3rem;
   background-color: transparent;
-  border: 0;
   color: white;
+  -o-object-fit: contain;
   object-fit: contain;
+  font-size: 1.5em;
 }
 .apng-wrap {
   width: 100%;

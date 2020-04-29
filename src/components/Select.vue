@@ -56,19 +56,19 @@
     <!-- 定制专属诗签按钮 -->
     <img
       class="select-poem"
-      src='../assets/btn-img/black_xuanshi.png'
-      @click="randomPoem()"
-    >
-    <img
-      class="select-video"
       src='../assets/btn-img/black_hua.png'
       @click="randomVideo()"
     >
     <img
-      class="select-music"
       ref="theBtnMusic"
       src='../assets/btn-img/black_peiyue.png'
       @click="randomMusic()"
+      class="select-video"
+    >
+    <img
+      class="select-music"
+      src='../assets/btn-img/black_xuanshi.png'
+      @click="randomPoem()"
     >
     <img
       class="share-btn"
