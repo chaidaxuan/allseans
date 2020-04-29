@@ -16,6 +16,15 @@ Vue.use(Router);
 };
 
 export default new Router({
+
+  // 老客进入欢迎页 /entry/beijing/ 目前是/welcome
+  // 老客进入选择页 /select/beijing/
+  // 老客进入分享页 /select/0-0-0-beijing-1588066930730 isOldCustom:true
+
+  // 新客进入老客的分享页 /select/0-0-0-beijing-1588066930730 isOldCustom:false
+  // 新客进入理想省份页面 /citySelect/0-0-0-beijing-1588066930730
+  // 新客进入选择页面     /select/beijing/  这beijing是新客选择的
+
   routes: [{
     path: '/',
     name: 'HelloWorld',
@@ -33,7 +42,7 @@ export default new Router({
     name: 'apngTest',
     component: apngTest
   }, {
-    path: '/select',
+    path: '/select/:cid',
     name: 'Select',
     component: Select
   }, {

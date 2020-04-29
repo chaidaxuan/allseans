@@ -11,6 +11,7 @@
       class="canvas-apng"
       :width="imgWidth"
       :height="imgheight"
+      id="apng-canvas"
     >
     </canvas>
 
@@ -137,20 +138,40 @@ export default class Select extends Vue {
 
   created() {}
   mounted() {
-    if (window.wx) {
-      window.wx.ready(function() {
-        let audio = <HTMLVideoElement>document.getElementById("audioPlay");
-        audio.play();
-      });
-    }
+    //
+    this.selectedImg = parseFloat(this.$route.params.cid.split("-")[0]);
+    this.selectedAudio = parseFloat(this.$route.params.cid.split("-")[1]);
+    this.selectedPoem = parseFloat(this.$route.params.cid.split("-")[2]);
 
-    this.randomVideo();
+    let ctx = this.$refs.theCanvas.getContext("2d");
+    this.imgWidth = this.imgsSrc[this.selectedImg].width;
+    this.imgheight = this.imgsSrc[this.selectedImg].height;
+
+    this.playVideo();
 
     this.$refs.theBtnMusic.click();
     //播放诗歌动画
     let btn = this.$refs.btn;
     this.$refs.btn.click();
   }
+
+  async playVideo() {
+    let ctx = this.$refs.theCanvas.getContext("2d");
+    this.imgWidth = this.imgsSrc[this.selectedImg].width;
+    this.imgheight = this.imgsSrc[this.selectedImg].height;
+
+    if (this.currentAnimation) {
+      this.currentAnimation.removeContext(ctx!);
+    }
+
+    const animation = await this.getAnimation(
+      this.imgsSrc[this.selectedImg].path
+    );
+    animation.play();
+    animation.addContext(ctx!);
+    this.currentAnimation = animation;
+  }
+
   print() {
     this.imgWidth = this.imgsSrc[0].width;
     this.imgheight = this.imgsSrc[0].height;
@@ -161,19 +182,6 @@ export default class Select extends Vue {
     this.selectedImg = Math.floor(Math.random() * (imgMax + 1));
     this.selectedAudio = Math.floor(Math.random() * (1 + 1));
     let data = { selectedImg: this.selectedImg };
-  }
-  toShare() {
-    let imgMax = this.imgsSrc.length - 1;
-    this.selectedImg = Math.floor(Math.random() * (1 + 1));
-    this.selectedAudio = Math.floor(Math.random() * (3 + 1));
-
-    //要传递的已选择的内容
-    let data = {
-      selectedImg: this.selectedImg.toString(),
-      selectedAudio: this.selectedAudio.toString(),
-      selectedPoem: this.selectedPoem.toString()
-    };
-    this.$router.replace({ name: "Share", params: data });
   }
 
   animations: { [key: string]: Promise<IAnimation> } = {};
@@ -186,6 +194,7 @@ export default class Select extends Vue {
 
   currentAnimation: IAnimation | null = null;
   downloading = false;
+
   async randomVideo() {
     if (this.downloading) {
       return;

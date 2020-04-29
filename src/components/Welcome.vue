@@ -184,8 +184,28 @@ export default class Welcome extends Vue {
   }
 
   customize() {
+    let params = {
+      isOldCustomer: "true"
+    };
+
+    // this.selectedImg = Math.floor(Math.random() * (1 + 1));
+    // this.selectedAudio = Math.floor(Math.random() * (1 + 1));
+    // this.selectedPoem = Math.floor(Math.random() * (1 + 1));
+
+    // 三个参数分别为(图片,音频,诗歌);
+    const hash =
+      this.selectedImg.toString() +
+      "-" +
+      this.selectedAudio.toString() +
+      "-" +
+      this.selectedPoem.toString();
+    debugger;
     this.$router.replace({
-      name: "Select"
+      name: "Select",
+      params: {
+        cid: hash,
+        isOldCustomer: "true"
+      }
     });
   }
   oneClickShare() {
@@ -204,6 +224,7 @@ export default class Welcome extends Vue {
       this.selectedAudio.toString() +
       "-" +
       this.selectedPoem.toString();
+    debugger;
     this.$router.replace({
       name: "Apng",
       params: {

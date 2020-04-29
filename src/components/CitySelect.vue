@@ -24,10 +24,12 @@
       <div style="text-align: center;">
         请选择你的理想省份
       </div>
-      <div style="text-align: center;">
-        进入选择页
-      </div>
     </div>
+
+    <button
+      class="toselect-btn"
+      @click="toSelect()"
+    > 进入选择页 </button>
   </div>
 </template>
 
@@ -52,9 +54,9 @@ export default class CitySelect extends Vue {
   ];
   imgWidth = 320;
   imgheight = 640;
-  selectedImgIndex = -1;
-  selectedAudioIndex = -1;
-  selectedPoemIndex = -1;
+  selectedImgIndex = 0;
+  selectedAudioIndex = 0;
+  selectedPoemIndex = 0;
   Region = [
     { province: "-请选择-", videoIndex: -1 },
     { province: "北京", videoIndex: 0 },
@@ -98,6 +100,21 @@ export default class CitySelect extends Vue {
       this.currentAnimation = animation;
       this.downloading = false;
     }
+  }
+  toSelect() {
+    const hash =
+      this.selectedImg.toString() +
+      "-" +
+      this.selectedAudioIndex.toString() +
+      "-" +
+      this.selectedPoemIndex.toString();
+
+    this.$router.replace({
+      name: "Select",
+      params: {
+        cid: hash
+      }
+    });
   }
 }
 </script>
@@ -219,5 +236,21 @@ fieldset[disabled] .form-control {
 }
 .select-wrap {
   padding: 1em;
+}
+.toselect-btn {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  /* top: 0; */
+  border: 1px solid black;
+  bottom: 30%;
+  width: 20rem;
+  height: 3rem;
+  background-color: transparent;
+  color: white;
+  -o-object-fit: contain;
+  object-fit: contain;
+  font-size: 1.5em;
 }
 </style>
