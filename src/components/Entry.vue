@@ -393,7 +393,7 @@ a {
   padding: 0px;
   background-color: transparent;
   top: 26%;
-  right: 2%;
+  right: 10%;
   font-family: "Microsoft YaHei";
 }
 .poem {

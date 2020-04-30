@@ -43,6 +43,9 @@
         class="poem-wrap"
       >
         <div class="poem">
+          <div>{{currentDate}}<br></div>
+          <div v-if="PoemProvince">我在{{PoemProvince}}<br></div>
+          <div><br></div>
           <div
             v-for="(item,i) in poems[selectedPoem].poem"
             :key='i'
@@ -106,6 +109,7 @@ export default class Select extends Vue {
     { path: require("../assets/3.png"), width: 528, height: 960 },
     { path: require("../assets/mountain.png"), width: 352, height: 640 }
   ];
+  currentDate = this.timestampToTime(new Date().getTime());
   imgWidth = 320;
   imgheight = 640;
   poems = [
@@ -139,6 +143,11 @@ export default class Select extends Vue {
       title: "output3"
     }
   ];
+  provinces = [
+    { provinceCode: "shanghai", provinceName: "上海" },
+    { provinceCode: "beijing", provinceName: "北京" }
+  ];
+  PoemProvince = "";
   currentProvince = "";
 
   created() {}
@@ -147,6 +156,9 @@ export default class Select extends Vue {
     let paramsUrl = window.atob(this.$route.params.cid);
     debugger;
     this.currentProvince = paramsUrl.split("-")[3];
+    this.PoemProvince = this.provinces.filter(
+      x => x.provinceCode === this.currentProvince
+    )[0].provinceName;
     debugger;
     this.selectedImg = parseFloat(paramsUrl.split("-")[0]);
     this.selectedAudio = parseFloat(paramsUrl.split("-")[1]);
@@ -267,6 +279,27 @@ export default class Select extends Vue {
     this.selectedAudio === 0
       ? (this.selectedAudio = 1)
       : (this.selectedAudio = 0);
+  }
+  timestampToTime(timestamp: number) {
+    if (timestamp) {
+      if (timestamp === 0) {
+        return "";
+      }
+      if (timestamp.toString().length != 10) {
+        debugger;
+        var date = new Date(timestamp); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+      } else {
+        var date = new Date(timestamp * 1000);
+      }
+      const Y = date.getFullYear() + "年";
+      const M =
+        (date.getMonth() + 1 < 10
+          ? "0" + (date.getMonth() + 1)
+          : date.getMonth() + 1) + "月";
+      const D = date.getDate() + "日";
+      debugger;
+      return Y + M + D;
+    }
   }
 }
 </script>
@@ -398,7 +431,7 @@ a {
   padding: 0px;
   background-color: transparent;
   top: 26%;
-  right: 2%;
+  right: 10%;
   font-family: "Microsoft YaHei";
 }
 .poem {

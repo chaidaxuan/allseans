@@ -151,10 +151,14 @@ export default {
   },
 
   mounted () {
-    // 判断是否是老客
-    let paramsUrl = window.atob(this.$route.params.cid);
     this.isOldCustomer = this.$route.params.isOldCustomer === 'true';
-
+    // 判断是否是老客var
+    if (this.isOldCustomer) {
+      var paramsUrl = window.atob(this.$route.params.cid);
+      debugger
+    } else {
+      var paramsUrl = this.$route.params.cid;
+    }
     let that = this;
     this.selectedImgIndex = paramsUrl.split('-')[0];
     this.selectedAudioIndex = paramsUrl.split('-')[1];
@@ -293,7 +297,10 @@ export default {
     // 画二维码部分
     printQCode () {
       let that = this;
-      let url = window.location.href + '-shanghai' + '-1588066930730';
+      let currentTimestamp = new Date().getTime();
+      let url = window.location.origin + window.location.pathname + '#/apng/' + this.selectedImgIndex + '-' + this.selectedAudioIndex + '-' + this.selectedPoemIndex + '-' + this.selectedProvince + '-' + currentTimestamp;
+      console.log('codeUrl', url);
+      debugger
       // 设置生成的二维码的属性
       let opts = {
         errorCorrectionLevel: 'H',
@@ -418,7 +425,7 @@ video {
   padding: 0px;
   background-color: transparent;
   top: 26%;
-  right: 2%;
+  right: 10%;
   font-family: "Microsoft YaHei";
 }
 .poem {

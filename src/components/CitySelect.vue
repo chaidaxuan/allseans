@@ -50,7 +50,7 @@ export default class CitySelect extends Vue {
   $refs!: {
     theBackgroundCanvas: HTMLCanvasElement;
   };
-
+  // :class="canClickStart?'toselect-btn ':'toselect-btn img-onlyRead'"
   msg = "Welcome to Your Vue.js App";
   show = false;
   showSelectImg = true;
@@ -64,10 +64,15 @@ export default class CitySelect extends Vue {
   selectedImgIndex = 0;
   selectedAudioIndex = 0;
   selectedPoemIndex = 0;
+  isHasSelectedCity = false;
   Region = [
     { province: "-请选择-", videoIndex: -1 },
-    { province: "北京", videoIndex: 0 },
-    { province: "上海", videoIndex: 1 }
+    { province: "上海", videoIndex: 0 },
+    { province: "北京", videoIndex: 1 }
+  ];
+  provinces = [
+    { provinceCode: "shanghai", provinceName: "上海" },
+    { provinceCode: "beijing", provinceName: "北京" }
   ];
   created() {}
   mounted() {
@@ -75,8 +80,8 @@ export default class CitySelect extends Vue {
     this.selectedImgIndex = parseFloat(paramsUrl.split("-")[0]);
     this.selectedAudioIndex = parseFloat(paramsUrl.split("-")[1]);
     this.selectedPoemIndex = parseFloat(paramsUrl.split("-")[2]);
-    this.ModifyProvince();
-    debugger;
+
+    this.firstSelected();
   }
   animations: { [key: string]: Promise<IAnimation> } = {};
   getAnimation(url: string): Promise<IAnimation> {
@@ -88,7 +93,34 @@ export default class CitySelect extends Vue {
 
   currentAnimation: IAnimation | null = null;
   downloading = false;
+
+  async firstSelected() {
+    if (this.selectedImgIndex > -1) {
+      this.selectedImg = this.selectedImgIndex;
+
+      debugger;
+      // let canvansTest = document.getElementById("apng-canvas");
+      this.imgWidth = this.imgsSrc[this.selectedImg].width;
+      this.imgheight = this.imgsSrc[this.selectedImg].height;
+      let ctx = this.$refs.theBackgroundCanvas.getContext("2d");
+
+      if (this.currentAnimation) {
+        this.currentAnimation.removeContext(ctx!);
+      }
+
+      const animation = await this.getAnimation(
+        this.imgsSrc[this.selectedImg].path
+      );
+      animation.play();
+      animation.addContext(ctx!);
+      this.currentAnimation = animation;
+      this.downloading = false;
+    }
+    window.scroll(0, 0);
+  }
+
   async ModifyProvince() {
+    this.isHasSelectedCity = true;
     if (this.selectedImgIndex > -1) {
       this.selectedImg = this.selectedImgIndex;
       // let canvansTest = document.getElementById("apng-canvas");
@@ -111,20 +143,30 @@ export default class CitySelect extends Vue {
     window.scroll(0, 0);
   }
   toSelect() {
-    const hash =
-      this.selectedImg.toString() +
-      "-" +
-      this.selectedAudioIndex.toString() +
-      "-" +
-      this.selectedPoemIndex.toString();
-
-    this.$router.replace({
-      name: "Select",
-      params: {
-        cid: hash,
-        isOldCustomer: "false"
+    if (this.isHasSelectedCity) {
+      let provinceCode = this.provinces[this.selectedImgIndex].provinceCode;
+      if (provinceCode) {
+        debugger;
+        const hash =
+          this.selectedImg.toString() +
+          "-" +
+          this.selectedAudioIndex.toString() +
+          "-" +
+          this.selectedPoemIndex.toString() +
+          "-" +
+          provinceCode +
+          "-" +
+          new Date().getTime().toString();
+        debugger;
+        this.$router.replace({
+          name: "Select",
+          params: {
+            cid: window.btoa(hash),
+            isOldCustomer: "false"
+          }
+        });
       }
-    });
+    }
   }
   showSelectOption() {
     this.showSelectImg = false;
@@ -257,7 +299,7 @@ fieldset[disabled] .form-control {
   left: 0;
   right: 0;
   /* top: 0; */
-  bottom: 10%;
+  bottom: 8%;
   width: 11rem;
   height: 3rem;
   background-color: transparent;
@@ -295,5 +337,8 @@ fieldset[disabled] .form-control {
   -o-object-fit: contain;
   object-fit: contain;
   font-size: 1.5em;
+}
+.img-onlyRead {
+  pointer-events: none;
 }
 </style>
