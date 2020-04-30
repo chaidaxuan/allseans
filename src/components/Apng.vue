@@ -44,7 +44,7 @@
         <div
           v-if="show"
           class="poem-wrap"
-          :class="imgsSrc[selectedPoemIndex].poemColor==='black'?'poem-blackfont':''"
+          :class="imgsSrc[selectedImgIndex].poemColor==='black'?'poem-blackfont':''"
         >
           <div class="poem">
             <div v-if="oldCustomerSharedTimestamp">{{oldCustomerSharedTimestamp}}<br></div>
@@ -451,7 +451,7 @@ video {
   font-size: 30px;
   padding: 0px;
   background-color: transparent;
-  top: 26%;
+  top: 17%;
   right: 10%;
   font-family: "Microsoft YaHei";
 }

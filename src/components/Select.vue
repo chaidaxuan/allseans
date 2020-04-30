@@ -26,7 +26,7 @@
       <div
         v-if="show"
         class="poem-wrap"
-        :class="imgsSrc[selectedPoem].poemColor==='black'?'poem-blackfont':''"
+        :class="imgsSrc[selectedImg].poemColor==='black'?'poem-blackfont':''"
       >
         <div class="poem">
           <div>{{currentDate}}<br></div>
@@ -353,7 +353,7 @@ a {
   margin: auto;
   left: 25%;
   bottom: 0%;
-  width: 6rem;
+  width: 25%;
   background-color: transparent;
   color: white;
   -o-object-fit: contain;
@@ -365,7 +365,7 @@ a {
   margin: auto;
   left: 50%;
   bottom: 0%;
-  width: 6rem;
+  width: 25%;
   background-color: transparent;
   color: white;
   -o-object-fit: contain;
@@ -399,7 +399,7 @@ a {
   left: 75%;
   bottom: 0%;
   width: 10rem;
-  width: 6rem;
+  width: 25%;
   background-color: transparent;
   color: white;
   -o-object-fit: contain;
@@ -416,7 +416,7 @@ a {
   font-size: 30px;
   padding: 0px;
   background-color: transparent;
-  top: 26%;
+  top: 17%;
   right: 10%;
   font-family: "Microsoft YaHei";
 }
