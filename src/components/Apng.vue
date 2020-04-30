@@ -145,31 +145,12 @@ export default {
         { path: require("../assets/普通底图.png"), width: 377, height: 670 },
         { path: require("../assets/普通底图2.png"), width: 377, height: 670 },
       ],
-      PoemProvince: '',
-      oldCustomerSharedTimestamp: ''
+      PoemProvince: '上海',
+      oldCustomerSharedTimestamp: this.timestampToTime(new Date().getTime())
     }
   },
 
   mounted () {
-    // if (window.wx) {
-    //   wx.onMenuShareAppMessage({
-    //     title: '全季', // 分享标题
-    //     desc: '快来看看', // 分享描述
-    //     link: 'https://cdn0.eigenvr.com/cx-test/#/apng/0-0-0-shanghai-1588236784651', // 分享链接，该链接域名必须与当前企业的可信域名一致
-    //     imgUrl: '', // 分享图标
-    //     type: '', // 分享类型,music、video或link，不填默认为link
-    //     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-    //     success: function () {
-    //       // 用户确认分享后执行的回调函数
-    //       console.log('ok');
-    //     },
-    //     cancel: function () {
-    //       console.log('no')
-    //       // 用户取消分享后执行的回调函数
-    //     }
-    //   });
-    // }
-
     this.isOldCustomer = this.$route.params.isOldCustomer === 'true';
     // 判断是否是老客var
     var paramsUrl = this.$route.params.cid;
@@ -178,18 +159,19 @@ export default {
     this.selectedImgIndex = paramsUrl.split('-')[0];
     this.selectedAudioIndex = paramsUrl.split('-')[1];
     this.selectedPoemIndex = paramsUrl.split('-')[2];
-    debugger
     if (this.isOldCustomer) {
-      this.selectedProvince = paramsUrl.split('-')[3];
-      debugger
-      this.PoemProvince = this.provinces.filter(x => x.provinceCode === this.selectedProvince)[0].provinceName || '';
-      this.oldCustomerSharedTimestamp = this.timestampToTime(parseFloat(paramsUrl.split('-')[4]));
-      debugger
+      if (paramsUrl.split('-').length > 3) {
+        this.selectedProvince = paramsUrl.split('-')[3];
+        this.PoemProvince = this.provinces.filter(x => x.provinceCode === this.selectedProvince)[0].provinceName || '';
+        this.oldCustomerSharedTimestamp = this.timestampToTime(parseFloat(paramsUrl.split('-')[4]));
+        debugger
+      }
     } else {
-      this.selectedProvince = paramsUrl.split('-')[3];
-      debugger
-      this.PoemProvince = this.provinces.filter(x => x.provinceCode === this.selectedProvince)[0].provinceName || '';
-      this.oldCustomerSharedTimestamp = this.timestampToTime(parseFloat(paramsUrl.split('-')[4]));
+      if (paramsUrl.split('-').length > 3) {
+        this.selectedProvince = paramsUrl.split('-')[3];
+        this.PoemProvince = this.provinces.filter(x => x.provinceCode === this.selectedProvince)[0].provinceName || '';
+        this.oldCustomerSharedTimestamp = this.timestampToTime(parseFloat(paramsUrl.split('-')[4]));
+      }
       debugger
     }
     debugger
@@ -241,7 +223,7 @@ export default {
       this.$router.replace({
         name: "CitySelect",
         params: {
-          cid: window.btoa(hash),
+          cid: hash,
         }
       });
     },
@@ -447,7 +429,7 @@ video {
   font-size: 0.8rem;
   text-align: left;
   /* margin: 0 auto; */
-  height: 40vh;
+  height: 30vh;
   writing-mode: vertical-rl; /*从左向右 从右向左是 writing-mode: vertical-rl;*/
   writing-mode: tb-rl; /*IE浏览器的从左向右 从右向左是 writing-mode: tb-rl；*/
 }

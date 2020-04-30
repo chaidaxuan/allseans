@@ -20,9 +20,9 @@
         class="poem-wrap"
       >
         <div class="poem">
-          <div>{{currentDate}}<br></div>
+          <!-- <div>{{currentDate}}<br></div>
           <div v-if="PoemProvince">我在{{PoemProvince}}<br></div>
-          <div><br></div>
+          <div><br></div> -->
           <div
             v-for="(item,i) in poems[selectedPoem].poem"
             :key='i'
@@ -210,7 +210,7 @@ export default class Entry extends Vue {
     this.$router.replace({
       name: "Select",
       params: {
-        cid: window.btoa(hash),
+        cid: hash,
         isOldCustomer: "true"
       }
     });
@@ -400,7 +400,7 @@ a {
   font-size: 0.8rem;
   text-align: left;
   /* margin: 0 auto; */
-  height: 40vh;
+  height: 30vh;
   writing-mode: vertical-rl; /*从左向右 从右向左是 writing-mode: vertical-rl;*/
   writing-mode: tb-rl; /*IE浏览器的从左向右 从右向左是 writing-mode: tb-rl；*/
 }

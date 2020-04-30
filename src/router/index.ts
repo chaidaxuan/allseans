@@ -7,7 +7,7 @@ import Share from '@/components/Share.vue'
 import Entry from '@/components/Entry.vue'
 import apngTest from '@/components/apngTest.vue'
 import CitySelect from '@/components/CitySelect.vue'
-
+import Welcome from '@/components/Welcome.vue'
 Vue.use(Router);
 (Router.prototype as any).goBack = function () {
   this.isBack = true;
@@ -41,6 +41,10 @@ export default new Router({
     path: '/select/:cid',
     name: 'Select',
     component: Select
+  }, {
+    path: '/welcome',
+    name: 'Welcome',
+    component: Welcome
   }, {
     path: '/share',
     name: 'Share',

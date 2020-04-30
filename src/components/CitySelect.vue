@@ -76,7 +76,7 @@ export default class CitySelect extends Vue {
   ];
   created() {}
   mounted() {
-    let paramsUrl = window.atob(this.$route.params.cid);
+    let paramsUrl = this.$route.params.cid;
     this.selectedImgIndex = parseFloat(paramsUrl.split("-")[0]);
     this.selectedAudioIndex = parseFloat(paramsUrl.split("-")[1]);
     this.selectedPoemIndex = parseFloat(paramsUrl.split("-")[2]);
@@ -161,7 +161,7 @@ export default class CitySelect extends Vue {
         this.$router.replace({
           name: "Select",
           params: {
-            cid: window.btoa(hash),
+            cid: hash,
             isOldCustomer: "false"
           }
         });
