@@ -26,6 +26,7 @@
       <div
         v-if="show"
         class="poem-wrap"
+        :class="imgsSrc[selectedPoem].poemColor==='black'?'poem-blackfont':''"
       >
         <div class="poem">
           <div>{{currentDate}}<br></div>
@@ -91,8 +92,18 @@ export default class Select extends Vue {
   selectedAudio = 0;
   selectedPoem = 0;
   imgsSrc = [
-    { path: require("../assets/3.png"), width: 528, height: 960 },
-    { path: require("../assets/mountain.png"), width: 352, height: 640 }
+    {
+      path: require("../assets/3.png"),
+      width: 528,
+      height: 960,
+      poemColor: "white"
+    },
+    {
+      path: require("../assets/mountain.png"),
+      width: 352,
+      height: 640,
+      poemColor: "black"
+    }
   ];
   currentDate = this.timestampToTime(new Date().getTime());
   imgWidth = 320;
@@ -340,12 +351,9 @@ a {
 .select-video {
   position: absolute;
   margin: auto;
-  /* left: 0; */
-  right: 21%;
-  /* top: 0; */
-  bottom: 20%;
+  left: 25%;
+  bottom: 0%;
   width: 6rem;
-  height: 4rem;
   background-color: transparent;
   color: white;
   -o-object-fit: contain;
@@ -355,12 +363,9 @@ a {
 .select-music {
   position: absolute;
   margin: auto;
-  left: 21%;
-  /* right: 0; */
-  /* top: 0; */
-  bottom: 10%;
+  left: 50%;
+  bottom: 0%;
   width: 6rem;
-  height: 4rem;
   background-color: transparent;
   color: white;
   -o-object-fit: contain;
@@ -369,13 +374,9 @@ a {
 }
 .select-poem {
   position: absolute;
-  margin: auto;
-  left: 21%;
-  /* right: 0; */
-  /* top: 0; */
-  bottom: 20%;
-  width: 6rem;
-  height: 4rem;
+  left: 0;
+  bottom: 0%;
+  width: 25%;
   background-color: transparent;
   color: white;
   -o-object-fit: contain;
@@ -395,13 +396,10 @@ a {
 .share-btn {
   position: absolute;
   margin: auto;
-  /* left: 0; */
-  right: 21%;
-  /* top: 0; */
-  bottom: 10%;
+  left: 75%;
+  bottom: 0%;
   width: 10rem;
   width: 6rem;
-  height: 4rem;
   background-color: transparent;
   color: white;
   -o-object-fit: contain;
@@ -452,5 +450,8 @@ a {
 .slide-fade-enter {
   transform: translateY(-10%);
   opacity: 0;
+}
+.poem-blackfont {
+  color: black;
 }
 </style>

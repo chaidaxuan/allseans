@@ -1,58 +1,59 @@
 <template>
-    <div class="apng-wrap">
-        <audio
-            id="audioPlay"
-            class='audio'
-            :src="audios[selectedAudio].path"
-            autoplay
-        ></audio>
-        <canvas
-            ref="theCanvas"
-            class="canvas-apng"
-            :width="imgWidth"
-            :height="imgheight"
-        >
-        </canvas>
-        <!-- 诗歌显示 -->
-        <transition name="slide-fade">
-            <div
-                v-if="show"
-                class="poem-wrap"
-            >
-                <div class="poem">
-                    <div
-                        v-for="(item,i) in poems[selectedPoem].poem"
-                        :key='i'
-                    >{{item}}<br></div>
-                    <div class="poem-info">{{poems[selectedPoem].info.auth}}<br></div>
-                    <div class="poem-info">{{poems[selectedPoem].info.chapter}}<br></div>
-                </div>
-            </div>
-        </transition>
+  <div class="apng-wrap">
+    <audio
+      id="audioPlay"
+      class='audio'
+      :src="audios[selectedAudio].path"
+      autoplay
+    ></audio>
+    <canvas
+      ref="theCanvas"
+      class="canvas-apng"
+      :width="imgWidth"
+      :height="imgheight"
+    >
+    </canvas>
+    <!-- 诗歌显示 -->
+    <transition name="slide-fade">
+      <div
+        v-if="show"
+        class="poem-wrap"
+        :class="imgsSrc[selectedPoem].poemColor==='black'?'poem-blackfont':''"
+      >
+        <div class="poem">
+          <div
+            v-for="(item,i) in poems[selectedPoem].poem"
+            :key='i'
+          >{{item}}<br></div>
+          <div class="poem-info">{{poems[selectedPoem].info.auth}}<br></div>
+          <div class="poem-info">{{poems[selectedPoem].info.chapter}}<br></div>
+        </div>
+      </div>
+    </transition>
 
-        <!-- 动画播放按钮 -->
-        <button
-            @click="show = true"
-            ref="btn"
-            style="display:none"
-        >动画</button>
-        <img
-            class="select-poem"
-            src='../assets/share-btn.png'
-            @click="oneClickShare()"
-        >
+    <!-- 动画播放按钮 -->
+    <button
+      @click="show = true"
+      ref="btn"
+      style="display:none"
+    >动画</button>
+    <img
+      class="select-poem"
+      src='../assets/share-btn.png'
+      @click="oneClickShare()"
+    >
 
-        <img
-            class="select-video"
-            src='../assets/customize-btn.png'
-            @click="customize()"
-        >
-        <img
-            class="title-img"
-            src='../assets/title.png'
-        >
+    <img
+      class="select-video"
+      src='../assets/customize-btn.png'
+      @click="customize()"
+    >
+    <img
+      class="title-img"
+      src='../assets/title.png'
+    >
 
-        <!-- <button
+    <!-- <button
             class="select-poem"
             @click="oneClickShare()"
         > 一键分享</button>
@@ -60,7 +61,7 @@
             class="select-video"
             @click="customize()"
         > 定制 </button> -->
-    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -81,8 +82,18 @@ export default class Welcome extends Vue {
   selectedAudio = 0;
   selectedPoem = 0;
   imgsSrc = [
-    { path: require("../assets/3.png"), width: 528, height: 960 },
-    { path: require("../assets/mountain.png"), width: 352, height: 640 }
+    {
+      path: require("../assets/3.png"),
+      width: 528,
+      height: 960,
+      poemColor: "white"
+    },
+    {
+      path: require("../assets/mountain.png"),
+      width: 352,
+      height: 640,
+      poemColor: "black"
+    }
   ];
   imgWidth = 320;
   imgheight = 640;

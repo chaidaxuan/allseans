@@ -79,8 +79,18 @@ export default class Entry extends Vue {
   PoemProvince = "";
   currentDate = this.timestampToTime(new Date().getTime());
   imgsSrc = [
-    { path: require("../assets/3.png"), width: 528, height: 960 },
-    { path: require("../assets/mountain.png"), width: 352, height: 640 }
+    {
+      path: require("../assets/3.png"),
+      width: 528,
+      height: 960,
+      poemColor: "white"
+    },
+    {
+      path: require("../assets/mountain.png"),
+      width: 352,
+      height: 640,
+      poemColor: "black"
+    }
   ];
   provinces = [
     { provinceCode: "shanghai", provinceName: "上海" },

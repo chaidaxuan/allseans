@@ -56,8 +56,18 @@ export default class CitySelect extends Vue {
   showSelectImg = true;
   selectedImg = 0;
   imgsSrc = [
-    { path: require("../assets/3.png"), width: 528, height: 960 },
-    { path: require("../assets/mountain.png"), width: 352, height: 640 }
+    {
+      path: require("../assets/3.png"),
+      width: 528,
+      height: 960,
+      poemColor: "white"
+    },
+    {
+      path: require("../assets/mountain.png"),
+      width: 352,
+      height: 640,
+      poemColor: "black"
+    }
   ];
   imgWidth = 320;
   imgheight = 640;

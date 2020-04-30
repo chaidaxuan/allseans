@@ -44,6 +44,7 @@
         <div
           v-if="show"
           class="poem-wrap"
+          :class="imgsSrc[selectedPoemIndex].poemColor==='black'?'poem-blackfont':''"
         >
           <div class="poem">
             <div v-if="oldCustomerSharedTimestamp">{{oldCustomerSharedTimestamp}}<br></div>
@@ -119,8 +120,18 @@ export default {
       selectedProvince: 'shanghai',
       oldCustomerSharedTimestamp: 0,
       imgsSrc: [
-        { path: require("../assets/3.png"), width: 528, height: 960 },
-        { path: require("../assets/mountain.png"), width: 352, height: 640 }
+        {
+          path: require("../assets/3.png"),
+          width: 528,
+          height: 960,
+          poemColor: "white"
+        },
+        {
+          path: require("../assets/mountain.png"),
+          width: 352,
+          height: 640,
+          poemColor: "black"
+        }
       ],
       provinces: [{ provinceCode: 'shanghai', provinceName: '上海' }, { provinceCode: 'beijing', provinceName: '北京' }],
       imgWidth: 528,
@@ -250,16 +261,24 @@ export default {
         ctx.drawImage(imgBase, 0, 0);
         that.printPoem();
         that.printQCode();
-
+        that.printLogo();
         that.$refs.theImg.src = that.$refs.theCanvas.toDataURL();
       };
     },
     printPoem () {
       let ctx = this.$refs.theCanvas.getContext("2d");
-      ctx.font = "14px bold 黑体";
-      ctx.fillStyle = "#FFFFFF";
+      ctx.font = "14px bold 微软雅黑";
 
-      let poemContent = [...this.poems[this.selectedPoemIndex].poem];
+      if (this.imgsSrc[this.selectedImgIndex].poemColor === 'black') {
+        ctx.fillStyle = "#000000";
+        debugger
+      } else {
+        ctx.fillStyle = "#FFFFFF";
+        debugger
+      }
+      debugger
+      let poemContent = [this.poems[this.selectedPoemIndex].info.auth, this.poems[this.selectedPoemIndex].info.chapter, ...this.poems[this.selectedPoemIndex].poem];
+      poemContent.push('');
       poemContent.push(`我在${this.PoemProvince}`);
       poemContent.push(`${this.oldCustomerSharedTimestamp}`);
       // 诗词竖排控制
@@ -290,6 +309,7 @@ export default {
           }
         }
       })
+
     },
     // 画二维码部分
     printQCode () {
@@ -303,7 +323,7 @@ export default {
         errorCorrectionLevel: 'H',
         type: 'image/jpeg',
         quality: 0.3,
-        margin: 0,
+        margin: 5,
       };
       QRCode.toDataURL(url, opts).then(base64 => {
         // 生成二维码
@@ -312,8 +332,11 @@ export default {
         imgQRCode.src = base64;
         imgQRCode.onload = function () {
 
+          let QRcodeWidth = that.baseMap[that.selectedImgIndex].width / 2 - 40;
+          let QRcodeHeight = that.baseMap[that.selectedImgIndex].height * 0.8 - 40;
           //使用canvas控制生成二维码的大小
-          ctx.drawImage(imgQRCode, 0, 0, imgQRCode.width, imgQRCode.height, 30, 30, 70, 70);
+          ctx.drawImage(imgQRCode, 0, 0, imgQRCode.width, imgQRCode.height, QRcodeWidth, QRcodeHeight, 80, 80);
+          debugger
           that.$refs.theImg.src = that.$refs.theCanvas.toDataURL();
         };
       }).catch(e => {
@@ -321,8 +344,15 @@ export default {
       })
     },
     printLogo () {
+      let that = this;
+      let ctx = this.$refs.theCanvas.getContext("2d");
       let imgLogo = new Image();
       imgLogo.src = require('../assets/title.png');
+      let logoWidth = that.baseMap[that.selectedImgIndex].width / 2 - imgLogo.width / 6;
+      let logoHeight = that.baseMap[that.selectedImgIndex].height * 0.1 - imgLogo.height / 2;
+      imgLogo.onload = function () {
+        ctx.drawImage(imgLogo, 0, 0, imgLogo.width, imgLogo.height, logoWidth, logoHeight, imgLogo.width / 3, imgLogo.height / 3);
+      }
       // imgLogo.onload = func
     },
     timestampToTime (timestamp) {
@@ -500,5 +530,8 @@ video {
   -o-object-fit: contain;
   object-fit: contain;
   font-size: 1.5em;
+}
+.poem-blackfont {
+  color: black;
 }
 </style>

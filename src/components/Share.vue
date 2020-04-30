@@ -34,8 +34,18 @@ export default class Share extends Vue {
   canvasHight = 960;
   selectedImg = -1;
   imgsSrc = [
-    { path: require("../assets/3.png"), width: 528, height: 960 },
-    { path: require("../assets/mountain.png"), width: 352, height: 640 }
+    {
+      path: require("../assets/3.png"),
+      width: 528,
+      height: 960,
+      poemColor: "white"
+    },
+    {
+      path: require("../assets/mountain.png"),
+      width: 352,
+      height: 640,
+      poemColor: "black"
+    }
   ];
   baseMap = [
     { path: require("../assets/普通底图.png"), width: 377, height: 670 },
