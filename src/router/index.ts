@@ -7,7 +7,6 @@ import Share from '@/components/Share.vue'
 import Entry from '@/components/Entry.vue'
 import apngTest from '@/components/apngTest.vue'
 import CitySelect from '@/components/CitySelect.vue'
-import Welcome from '@/components/Welcome.vue'
 
 Vue.use(Router);
 (Router.prototype as any).goBack = function () {
@@ -17,7 +16,7 @@ Vue.use(Router);
 
 export default new Router({
 
-  // 老客进入欢迎页 /entry/beijing/ 目前是/welcome
+  // 老客进入欢迎页 /entry/beijing/ 目前是/welcome 现在改为  https://cdn0.eigenvr.com/all-seasons/#/entry/beijing/
   // 老客进入选择页 /select/beijing/
   // 老客进入分享页 /apng/0-0-0-beijing-1588066930730 isOldCustom:true
 
@@ -30,10 +29,6 @@ export default new Router({
     path: '/',
     name: 'HelloWorld',
     component: HelloWorld
-  }, {
-    path: '/welcome',
-    name: 'Welcome',
-    component: Welcome
   }, {
     path: '/apng/:cid',
     name: 'Apng',
@@ -55,7 +50,7 @@ export default new Router({
     name: 'CitySelect',
     component: CitySelect
   }, {
-    path: '/entry/',
+    path: '/entry/:cname',
     name: 'Entry',
     component: Entry
   }

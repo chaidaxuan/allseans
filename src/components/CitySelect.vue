@@ -71,9 +71,10 @@ export default class CitySelect extends Vue {
   ];
   created() {}
   mounted() {
-    this.selectedImgIndex = parseFloat(this.$route.params.cid.split("-")[0]);
-    this.selectedAudioIndex = parseFloat(this.$route.params.cid.split("-")[1]);
-    this.selectedPoemIndex = parseFloat(this.$route.params.cid.split("-")[2]);
+    let paramsUrl = window.atob(this.$route.params.cid);
+    this.selectedImgIndex = parseFloat(paramsUrl.split("-")[0]);
+    this.selectedAudioIndex = parseFloat(paramsUrl.split("-")[1]);
+    this.selectedPoemIndex = parseFloat(paramsUrl.split("-")[2]);
     this.ModifyProvince();
     debugger;
   }

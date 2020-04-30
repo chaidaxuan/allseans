@@ -139,13 +139,18 @@ export default class Select extends Vue {
       title: "output3"
     }
   ];
+  currentProvince = "";
 
   created() {}
   mounted() {
     //
-    this.selectedImg = parseFloat(this.$route.params.cid.split("-")[0]);
-    this.selectedAudio = parseFloat(this.$route.params.cid.split("-")[1]);
-    this.selectedPoem = parseFloat(this.$route.params.cid.split("-")[2]);
+    let paramsUrl = window.atob(this.$route.params.cid);
+    debugger;
+    this.currentProvince = paramsUrl.split("-")[3];
+    debugger;
+    this.selectedImg = parseFloat(paramsUrl.split("-")[0]);
+    this.selectedAudio = parseFloat(paramsUrl.split("-")[1]);
+    this.selectedPoem = parseFloat(paramsUrl.split("-")[2]);
 
     let ctx = this.$refs.theCanvas.getContext("2d");
     this.imgWidth = this.imgsSrc[this.selectedImg].width;
@@ -235,12 +240,16 @@ export default class Select extends Vue {
       "-" +
       this.selectedAudio.toString() +
       "-" +
-      this.selectedPoem.toString();
+      this.selectedPoem.toString() +
+      "-" +
+      this.currentProvince +
+      "-" +
+      new Date().getTime().toString();
     debugger;
     this.$router.replace({
       name: "Apng",
       params: {
-        cid: hash,
+        cid: window.btoa(hash),
         isOldCustomer: "true"
       }
     });

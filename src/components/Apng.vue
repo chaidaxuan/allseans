@@ -48,7 +48,6 @@
           <div class="poem">
             <div v-if="oldCustomerSharedTimestamp">{{oldCustomerSharedTimestamp}}<br></div>
             <div v-if="PoemProvince">我在{{PoemProvince}}<br></div>
-
             <div><br></div>
             <div
               v-for="(item,i) in poems[selectedPoemIndex].poem"
@@ -110,12 +109,6 @@ export default {
 
   data () {
     return {
-      // $refs: {
-      //   theCanvas: HTMLCanvasElement,
-      //   theImg: HTMLImageElement,
-      //   codeCanvas: HTMLCanvasElement,
-      //   btn: HTMLButtonElement,
-      // },
       msg: 'Welcome to Your Vue.js App',
       show: false,
       canSave: true,
@@ -123,13 +116,13 @@ export default {
       selectedImgIndex: 0,
       selectedPoemIndex: 0,
       selectedAudioIndex: 0,
-      selectedProvince: 0,
+      selectedProvince: 'shanghai',
       oldCustomerSharedTimestamp: 0,
       imgsSrc: [
         { path: require("../assets/3.png"), width: 528, height: 960 },
         { path: require("../assets/mountain.png"), width: 352, height: 640 }
       ],
-      provinces: [{ provinceCode: '-shanghai', provinceName: '上海' }, { provinceCode: '-beijing', provinceName: '北京' }],
+      provinces: [{ provinceCode: 'shanghai', provinceName: '上海' }, { provinceCode: 'beijing', provinceName: '北京' }],
       imgWidth: 528,
       imgheight: 960,
       canvasWidth: 0,
@@ -159,16 +152,26 @@ export default {
 
   mounted () {
     // 判断是否是老客
+    let paramsUrl = window.atob(this.$route.params.cid);
     this.isOldCustomer = this.$route.params.isOldCustomer === 'true';
 
     let that = this;
-    this.selectedImgIndex = this.$route.params.cid.split('-')[0];
-    this.selectedAudioIndex = this.$route.params.cid.split('-')[1];
-    this.selectedPoemIndex = this.$route.params.cid.split('-')[2];
-    if (!this.isOldCustomer) {
-      this.selectedProvince = this.$route.params.cid.split('-')[3];
-      this.PoemProvince = this.provinces.filter(x => x.province === this.provinceCode)[0].provinceName;
-      this.oldCustomerSharedTimestamp = this.timestampToTime(parseFloat(this.$route.params.cid.split('-')[4]));
+    this.selectedImgIndex = paramsUrl.split('-')[0];
+    this.selectedAudioIndex = paramsUrl.split('-')[1];
+    this.selectedPoemIndex = paramsUrl.split('-')[2];
+    debugger
+    if (this.isOldCustomer) {
+      this.selectedProvince = paramsUrl.split('-')[3];
+      debugger
+      this.PoemProvince = this.provinces.filter(x => x.provinceCode === this.selectedProvince)[0].provinceName || '';
+      this.oldCustomerSharedTimestamp = this.timestampToTime(parseFloat(paramsUrl.split('-')[4]));
+      debugger
+    } else {
+      this.selectedProvince = paramsUrl.split('-')[3];
+      debugger
+      this.PoemProvince = this.provinces.filter(x => x.provinceCode === this.selectedProvince)[0].provinceName || '';
+      this.oldCustomerSharedTimestamp = this.timestampToTime(parseFloat(paramsUrl.split('-')[4]));
+      debugger
     }
     debugger
 
@@ -219,7 +222,7 @@ export default {
       this.$router.replace({
         name: "CitySelect",
         params: {
-          cid: hash,
+          cid: window.btoa(hash),
         }
       });
     },
@@ -252,12 +255,12 @@ export default {
     },
     printPoem () {
       let ctx = this.$refs.theCanvas.getContext("2d");
-      ctx.font = "16px bold 黑体";
-      // ctx.fillStyle = "#FFFFFF";
+      ctx.font = "14px bold 黑体";
+      ctx.fillStyle = "#FFFFFF";
 
       let poemContent = [...this.poems[this.selectedPoemIndex].poem];
       poemContent.push(`我在${this.PoemProvince}`);
-      poemContent.push(`${this.timestampToTime(parseFloat(this.oldCustomerSharedTimestamp))}`);
+      poemContent.push(`${this.oldCustomerSharedTimestamp}`);
       // 诗词竖排控制
       debugger
       poemContent.forEach((text, index) => {
