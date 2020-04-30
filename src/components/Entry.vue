@@ -236,7 +236,7 @@ export default class Entry extends Vue {
     this.$router.replace({
       name: "Apng",
       params: {
-        cid: window.btoa(hash),
+        cid: hash,
         isOldCustomer: "true"
       }
     });

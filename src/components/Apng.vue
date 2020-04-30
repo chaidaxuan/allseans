@@ -151,14 +151,29 @@ export default {
   },
 
   mounted () {
+    // if (window.wx) {
+    //   wx.onMenuShareAppMessage({
+    //     title: '全季', // 分享标题
+    //     desc: '快来看看', // 分享描述
+    //     link: 'https://cdn0.eigenvr.com/cx-test/#/apng/0-0-0-shanghai-1588236784651', // 分享链接，该链接域名必须与当前企业的可信域名一致
+    //     imgUrl: '', // 分享图标
+    //     type: '', // 分享类型,music、video或link，不填默认为link
+    //     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+    //     success: function () {
+    //       // 用户确认分享后执行的回调函数
+    //       console.log('ok');
+    //     },
+    //     cancel: function () {
+    //       console.log('no')
+    //       // 用户取消分享后执行的回调函数
+    //     }
+    //   });
+    // }
+
     this.isOldCustomer = this.$route.params.isOldCustomer === 'true';
     // 判断是否是老客var
-    if (this.isOldCustomer) {
-      var paramsUrl = window.atob(this.$route.params.cid);
-      debugger
-    } else {
-      var paramsUrl = this.$route.params.cid;
-    }
+    var paramsUrl = this.$route.params.cid;
+
     let that = this;
     this.selectedImgIndex = paramsUrl.split('-')[0];
     this.selectedAudioIndex = paramsUrl.split('-')[1];
