@@ -94,6 +94,7 @@ export default class CitySelect extends Vue {
     this.firstSelected();
   }
   animations: { [key: string]: Promise<IAnimation> } = {};
+
   getAnimation(url: string): Promise<IAnimation> {
     if (!this.animations[url]) {
       this.animations[url] = APNG.parseURL(url);
@@ -104,33 +105,16 @@ export default class CitySelect extends Vue {
   currentAnimation: IAnimation | null = null;
   downloading = false;
 
-  async firstSelected() {
-    if (this.selectedImgIndex > -1) {
-      this.selectedImg = this.selectedImgIndex;
-
-      debugger;
-      // let canvansTest = document.getElementById("apng-canvas");
-      this.imgWidth = this.imgsSrc[this.selectedImg].width;
-      this.imgheight = this.imgsSrc[this.selectedImg].height;
-      let ctx = this.$refs.theBackgroundCanvas.getContext("2d");
-
-      if (this.currentAnimation) {
-        this.currentAnimation.removeContext(ctx!);
-      }
-
-      const animation = await this.getAnimation(
-        this.imgsSrc[this.selectedImg].path
-      );
-      animation.play();
-      animation.addContext(ctx!);
-      this.currentAnimation = animation;
-      this.downloading = false;
-    }
-    window.scroll(0, 0);
+  firstSelected() {
+    this.playAnimation();
   }
 
-  async ModifyProvince() {
+  ModifyProvince() {
     this.isHasSelectedCity = true;
+    this.playAnimation();
+  }
+
+  async playAnimation() {
     if (this.selectedImgIndex > -1) {
       this.selectedImg = this.selectedImgIndex;
       // let canvansTest = document.getElementById("apng-canvas");
@@ -156,7 +140,6 @@ export default class CitySelect extends Vue {
     if (this.isHasSelectedCity) {
       let provinceCode = this.provinces[this.selectedImgIndex].provinceCode;
       if (provinceCode) {
-        debugger;
         const hash =
           this.selectedImg.toString() +
           "-" +
@@ -167,7 +150,6 @@ export default class CitySelect extends Vue {
           provinceCode +
           "-" +
           new Date().getTime().toString();
-        debugger;
         this.$router.replace({
           name: "Select",
           params: {

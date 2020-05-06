@@ -68,11 +68,6 @@
         @click="saveImg()"
         src='../assets/btn-img/black_share_changan.png'
       >
-      <!-- <button
-        v-if="!isOldCustomer"
-        class="select-city"
-        @click="selectCity()"
-      > 进入理想省份 </button> -->
 
       <img
         v-if="!isOldCustomer"
@@ -97,17 +92,9 @@
 </template>
 
 <script>
-import Select from '@/components/Select'
-import Share from '@/components/Share'
-// import QRCode from 'qrcodejs2'
 var QRCode = require('qrcode');
 export default {
   name: 'Apng',
-  components: {
-    Select,
-    Share
-  },
-
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
@@ -163,36 +150,28 @@ export default {
 
   mounted () {
     this.isOldCustomer = this.$route.params.isOldCustomer === 'true';
-    // 判断是否是老客var
+    // 判断是否是老客
     var paramsUrl = this.$route.params.cid;
 
     let that = this;
     this.selectedImgIndex = paramsUrl.split('-')[0];
     this.selectedAudioIndex = paramsUrl.split('-')[1];
     this.selectedPoemIndex = paramsUrl.split('-')[2];
-    if (this.isOldCustomer) {
-      if (paramsUrl.split('-').length > 3) {
-        this.selectedProvince = paramsUrl.split('-')[3];
-        this.PoemProvince = this.provinces.filter(x => x.provinceCode === this.selectedProvince)[0].provinceName || '';
-        this.oldCustomerSharedTimestamp = this.timestampToTime(parseFloat(paramsUrl.split('-')[4]));
-        debugger
-      }
-    } else {
-      if (paramsUrl.split('-').length > 3) {
-        this.selectedProvince = paramsUrl.split('-')[3];
-        this.PoemProvince = this.provinces.filter(x => x.provinceCode === this.selectedProvince)[0].provinceName || '';
-        this.oldCustomerSharedTimestamp = this.timestampToTime(parseFloat(paramsUrl.split('-')[4]));
-      }
+
+    //老客的分享页面
+    if (paramsUrl.split('-').length > 3) {
+      this.selectedProvince = paramsUrl.split('-')[3];
+      this.PoemProvince = this.provinces.filter(x => x.provinceCode === this.selectedProvince)[0].provinceName || '';
+      this.oldCustomerSharedTimestamp = this.timestampToTime(parseFloat(paramsUrl.split('-')[4]));
       debugger
     }
-    debugger
 
     //播放诗歌动画
     let btn = this.$refs.btn;
     this.$refs.btn.click();
 
     //播放视频  
-    this.print();
+    this.playVideo();
 
     //画要下载的图片
     if (this.isOldCustomer) {
@@ -209,7 +188,7 @@ export default {
       this.imgIndex === 3 ? this.imgIndex = 0 : this.imgIndex++;
       this.imgSrc = this.imgsSrc[this.imgIndex];
     },
-    print () {
+    playVideo () {
       // 调整canvas的宽高
       this.imgWidth = this.imgsSrc[this.selectedImgIndex].width;
       this.imgheight = this.imgsSrc[this.selectedImgIndex].height;
@@ -271,12 +250,10 @@ export default {
 
       if (this.imgsSrc[this.selectedImgIndex].poemColor === 'black') {
         ctx.fillStyle = "#000000";
-        debugger
       } else {
         ctx.fillStyle = "#FFFFFF";
-        debugger
       }
-      debugger
+
       let poemContent = [this.poems[this.selectedPoemIndex].info.auth, this.poems[this.selectedPoemIndex].info.chapter, ...this.poems[this.selectedPoemIndex].poem];
       poemContent.push('');
       poemContent.push(`我在${this.PoemProvince}`);

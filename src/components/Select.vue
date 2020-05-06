@@ -29,7 +29,7 @@
         :class="imgsSrc[selectedImg].poemColor==='black'?'poem-blackfont':''"
       >
         <div class="poem">
-          <div>{{currentDate}}<br></div>
+          <!-- <div>{{currentDate}}<br></div> -->
           <!-- <div v-if="PoemProvince">我在{{PoemProvince}}<br></div> -->
           <div><br></div>
           <div

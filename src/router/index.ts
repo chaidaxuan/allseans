@@ -16,7 +16,7 @@ Vue.use(Router);
 
 export default new Router({
 
-  // 老客进入欢迎页 /entry/beijing/ 目前是/welcome 现在改为  https://cdn0.eigenvr.com/all-seasons/#/entry/beijing/
+  // 老客进入欢迎页 /welcome
   // 老客进入选择页 /select/beijing/
   // 老客进入分享页 /apng/0-0-0-beijing-1588066930730 isOldCustom:true
 

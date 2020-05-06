@@ -67,6 +67,27 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import Router from "vue-router";
+
+interface IIPApiReturn {
+  address: string; // "CN|北京|北京|None|CHINANET|1|None",    #详细地址信息
+  content: // #结构信息
+  {
+    address: string; // "北京市",    #简要地址信息
+    address_detail: //  #结构化地址信息
+    {
+      city: string; // "北京市",    #城市
+      city_code: number; // 131,    #百度城市代码
+      province: string; // "北京市",    #省份
+    };
+    point: //  #当前城市中心点
+    {
+      x: string; // "116.39564504",    #当前城市中心点经度
+      y: string; // "39.92998578"    #当前城市中心点纬度
+    };
+  };
+  status: number; // 0    #结果状态返回码
+}
+
 @Component({ components: {} })
 export default class Welcome extends Vue {
   $router!: Router;
@@ -95,6 +116,7 @@ export default class Welcome extends Vue {
       poemColor: "black"
     }
   ];
+
   imgWidth = 320;
   imgheight = 640;
   poems = [
@@ -128,15 +150,108 @@ export default class Welcome extends Vue {
       title: "output3"
     }
   ];
-  created() {}
+  provinceVideo = [
+    {
+      provinceCode: "anhui",
+      imgsSrc: [
+        {
+          path: require("../assets/3.png"),
+          width: 528,
+          height: 960,
+          poemColor: "white"
+        },
+        {
+          path: require("../assets/mountain.png"),
+          width: 352,
+          height: 640,
+          poemColor: "black"
+        }
+      ]
+    },
+    {
+      provinceCode: "beijing",
+      imgsSrc: [
+        {
+          path: require("../assets/3.png"),
+          width: 528,
+          height: 960,
+          poemColor: "white"
+        },
+        {
+          path: require("../assets/mountain.png"),
+          width: 352,
+          height: 640,
+          poemColor: "black"
+        }
+      ]
+    },
+    {
+      provinceCode: "上海市",
+      imgsSrc: [
+        {
+          path: require("../assets/3.png"),
+          width: 528,
+          height: 960,
+          poemColor: "white"
+        },
+        {
+          path: require("../assets/mountain.png"),
+          width: 352,
+          height: 640,
+          poemColor: "black"
+        }
+      ]
+    }
+  ];
+
+  async getLocation() {
+    return new Promise<IIPApiReturn>((resolve, reject) => {
+      const url =
+        "http://api.map.baidu.com/location/ip?ak=ddBZ2RjgVlRUwNs25lRHbWnEpunFXB6a&callback=getLocationCallback";
+      const script = document.createElement("script");
+      const timer = setTimeout(() => {
+        window.document.body.removeChild(script);
+        reject("timeout");
+      }, 3000);
+      (window as any).getLocationCallback = (result: IIPApiReturn) => {
+        window.document.body.removeChild(script);
+        clearTimeout(timer);
+        resolve(result);
+      };
+      script.type = "text/javascript";
+      script.src = url;
+      window.document.body.appendChild(script);
+    });
+  }
+
+  async created() {
+    const loc = await this.getLocation();
+    let currentProvince = loc.content.address_detail.province;
+    let currentCity = loc.content.address_detail.city;
+    localStorage.setItem("currentProvince", currentProvince);
+    localStorage.setItem("currentCity", currentCity);
+
+    this.imgsSrc = this.provinceVideo.filter(
+      x => x.provinceCode === currentProvince
+    )[0].imgsSrc;
+
+    console.log(
+      "city:",
+      loc.content.address_detail.city,
+      "prpvince:",
+      loc.content.address_detail.province
+    );
+    console.log(loc);
+  }
+
   mounted() {
+    // 自动播放音乐
     document.addEventListener(
       "WeixinJSBridgeReady",
       function() {
         let audio = <HTMLVideoElement>document.getElementById("audioPlay");
         audio.play();
         console.log("WeixinJSBridgeReady");
-        // document.getElementById('video').play();
       },
       false
     );
